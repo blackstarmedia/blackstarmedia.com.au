@@ -137,10 +137,10 @@
         if (s.a > 0.8 || s.a < 0.12) s.dir *= -1;
         s.y += s.vy;
         if (s.y > h) { s.y = -2; s.x = Math.random() * w; }
-        // gold-tinted twinkle for a few; mostly white
+        // red-tinted twinkle for a few; mostly white
         ctx.beginPath();
         ctx.fillStyle = (i % 9 === 0)
-          ? "rgba(201,168,76," + s.a.toFixed(2) + ")"
+          ? "rgba(229,9,20," + s.a.toFixed(2) + ")"
           : "rgba(255,255,255," + s.a.toFixed(2) + ")";
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();

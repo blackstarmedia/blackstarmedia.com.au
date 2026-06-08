@@ -6,21 +6,22 @@
 
   <!-- Primary SEO -->
   <title>Black Star Media &amp; Entertainment — Entertainment. Technology. Culture.</title>
-  <meta name="description" content="Brisbane-based multimedia entertainment company. Music, AI education, hospitality and digital content — home of Tha Mega Boy Band, AI MegaVault, NeoSoul Music and AI:M Workshops." />
-  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="description" content="An independent multimedia entertainment company. Music, AI education and digital content — home of Tha Mega Boy Band, AI MegaVault, NeoSoul Music and AI:M Workshops." />
+  <meta name="theme-color" content="#000000" />
   <link rel="canonical" href="https://blackstarmedia.com.au/" />
 
   <!-- Open Graph / social -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Black Star Media &amp; Entertainment" />
   <meta property="og:title" content="Black Star Media &amp; Entertainment" />
-  <meta property="og:description" content="Entertainment. Technology. Culture. Brisbane-based media management — music, AI education, hospitality and digital content." />
+  <meta property="og:description" content="Entertainment. Technology. Culture. Independent media management — music, AI education and digital content." />
   <meta property="og:url" content="https://blackstarmedia.com.au/" />
   <meta property="og:image" content="https://blackstarmedia.com.au/assets/img/og-cover.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Favicon (inline star SVG) -->
-  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png" />
 
   <!-- Fonts: Playfair Display (display), DM Sans (body), Space Mono (labels) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,9 +43,12 @@
     "@type": "Organization",
     "name": "Black Star Media & Entertainment",
     "url": "https://blackstarmedia.com.au/",
-    "description": "Brisbane-based multimedia entertainment management company spanning music, AI education, hospitality and digital content.",
-    "address": { "@type": "PostalAddress", "addressLocality": "Brisbane", "addressRegion": "QLD", "addressCountry": "AU" },
-    "sameAs": []
+    "description": "An independent multimedia entertainment management company spanning music, AI education and digital content.",
+    "sameAs": [
+      "https://www.youtube.com/@AiMegaVault",
+      "https://www.youtube.com/@NeoSoulMusic26",
+      "https://open.spotify.com/artist/6v0R5eHKsjwcvml4rpPpng"
+    ]
   }
   </script>
 </head>
@@ -54,6 +58,7 @@
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a class="wordmark" href="#top" aria-label="Black Star Media home">
+        <img class="wordmark__logo" src="assets/img/logo.png" alt="" aria-hidden="true" />
         <span class="w-black">BLACK</span><span class="w-star">&#9733;STAR</span><span class="w-media">MEDIA</span>
       </a>
 
@@ -90,10 +95,11 @@
     <section class="hero" id="hero">
       <canvas class="hero__canvas" id="starfield" aria-hidden="true"></canvas>
       <div class="container hero__inner">
-        <p class="eyebrow reveal">Brisbane, Queensland &middot; Australia</p>
-        <h1 class="hero__title reveal" data-delay="1">Entertainment. Technology. Culture.</h1>
-        <p class="hero__sub lead reveal" data-delay="2">Brisbane-based media management. Music, hospitality, AI education and the digital content shaping what comes next.</p>
-        <div class="hero__cta reveal" data-delay="3">
+        <img class="hero__logo reveal" src="assets/img/logo.png" alt="Black Star Media &amp; Entertainment" />
+        <p class="eyebrow reveal" data-delay="1">An Independent Entertainment Studio</p>
+        <h1 class="hero__title reveal" data-delay="2">Entertainment. Technology. Culture.</h1>
+        <p class="hero__sub lead reveal" data-delay="3">Independent media management. Music, AI education and the digital content shaping what comes next.</p>
+        <div class="hero__cta reveal" data-delay="4">
           <a class="btn btn--gold-outline" href="#ventures">Explore Our Ventures</a>
           <a class="link-arrow" href="#about">Meet the Team <span class="chev">&rarr;</span></a>
         </div>
@@ -121,13 +127,13 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Our World</p>
-          <h2 class="section-title">Four ventures. One vision.</h2>
+          <h2 class="section-title">Two ventures. One vision.</h2>
           <p class="section-sub lead">A growing portfolio united by culture, community and technology.</p>
         </div>
 
-        <div class="grid grid--4">
+        <div class="grid grid--2">
           <a class="venture reveal" data-delay="1" href="#music">
-            <span class="venture__bg" style="background-image:linear-gradient(135deg,#2b2535,#131315);"></span>
+            <span class="venture__bg" style="background-image:linear-gradient(135deg,#20242b,#0a0b0d);"></span>
             <span class="venture__scrim"></span>
             <span class="venture__kicker">Music</span>
             <span class="venture__name">Tha Mega Boy Band</span>
@@ -136,7 +142,7 @@
           </a>
 
           <a class="venture reveal" data-delay="2" href="#workshops">
-            <span class="venture__bg" style="background-image:linear-gradient(135deg,#26261b,#131315);"></span>
+            <span class="venture__bg" style="background-image:linear-gradient(135deg,#1b1e24,#090a0c);"></span>
             <span class="venture__scrim"></span>
             <span class="venture__kicker">Education</span>
             <span class="venture__name">AI:M Workshops</span>
@@ -144,23 +150,6 @@
             <span class="venture__line"></span>
           </a>
 
-          <a class="venture reveal" data-delay="3" href="#contact">
-            <span class="venture__bg" style="background-image:linear-gradient(135deg,#2e2320,#131315);"></span>
-            <span class="venture__scrim"></span>
-            <span class="venture__kicker">Hospitality &middot; Shailer Park</span>
-            <span class="venture__name">Mosaic Pizza</span>
-            <span class="venture__tag">Wood-fired. Community-first.</span>
-            <span class="venture__line"></span>
-          </a>
-
-          <a class="venture reveal" data-delay="4" href="#contact">
-            <span class="venture__bg" style="background-image:linear-gradient(135deg,#2c2418,#131315);"></span>
-            <span class="venture__scrim"></span>
-            <span class="venture__kicker">Hospitality &middot; Shailer Park</span>
-            <span class="venture__name">Poplar Indian Express</span>
-            <span class="venture__tag">North Indian flavour. Fast. Authentic.</span>
-            <span class="venture__line"></span>
-          </a>
         </div>
       </div>
     </section>
@@ -169,39 +158,69 @@
     <section class="section section--surface" id="videos">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">Latest From Our Channels</p>
+          <p class="eyebrow">Our Channels</p>
           <h2 class="section-title">Watch what we're making.</h2>
-          <p class="section-sub lead">AI tutorials and AI-generated NeoSoul — new uploads every week.</p>
+          <p class="section-sub lead">Two original YouTube channels, two distinct worlds — practical AI know-how and AI-composed soul. New uploads every week.</p>
         </div>
 
         <div class="grid grid--2">
-          <!-- AI MegaVault -->
-          <div class="reveal" data-delay="1">
-            <!-- Lazy YouTube embed. Replace data-yt with the AI MegaVault video ID. -->
-            <div class="embed-lazy" data-yt="VIDEO_ID_AIMEGAVAULT" role="button" tabindex="0" aria-label="Play AI MegaVault video">
-              <span class="embed-lazy__play" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <!-- AI MEGA VAULT channel -->
+          <article class="channel reveal" data-delay="1">
+            <header class="channel__head">
+              <span class="channel__mark" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.42-4.81ZM10 15V9l5 3Z"/></svg>
               </span>
-              <span class="embed-lazy__label">AI MegaVault &middot; YouTube</span>
-            </div>
-            <div style="margin-top:1rem;">
-              <a class="link-arrow" href="https://youtube.com/@AIMegaVault" target="_blank" rel="noopener">Visit AI MegaVault <span class="chev">&rarr;</span></a>
-            </div>
-          </div>
+              <span class="channel__id">
+                <span class="channel__name">AI MEGA VAULT</span>
+                <span class="channel__handle">@AiMegaVault</span>
+              </span>
+            </header>
 
-          <!-- NeoSoul Music -->
-          <div class="reveal" data-delay="2">
-            <!-- Lazy YouTube embed. Replace data-yt with the NeoSoul Music video ID. -->
-            <div class="embed-lazy" data-yt="VIDEO_ID_NEOSOUL" role="button" tabindex="0" aria-label="Play NeoSoul Music video">
+            <!-- AI MEGA VAULT — featured video (latest upload). Swap data-yt + thumbnail to feature a different video. -->
+            <div class="embed-lazy" data-yt="Kl5MOpvXuD8" role="button" tabindex="0"
+                 aria-label="Play AI MEGA VAULT video: Creating Content about Creating Content"
+                 style="background:linear-gradient(rgba(10,10,10,0.2),rgba(10,10,10,0.55)),url('https://i.ytimg.com/vi/Kl5MOpvXuD8/hqdefault.jpg') center/cover;">
+              <span class="embed-lazy__chip">Latest upload</span>
+              <span class="embed-lazy__chip embed-lazy__chip--right">AI · Education</span>
               <span class="embed-lazy__play" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </span>
-              <span class="embed-lazy__label">NeoSoul Music &middot; YouTube</span>
             </div>
-            <div style="margin-top:1rem;">
-              <a class="link-arrow" href="https://youtube.com/@NeoSoulMusic" target="_blank" rel="noopener">Visit NeoSoul Music <span class="chev">&rarr;</span></a>
+
+            <footer class="channel__foot">
+              <p class="channel__desc">Hands-on tutorials and breakdowns on the AI tools reshaping how content gets made.</p>
+              <a class="link-arrow" href="https://www.youtube.com/@AiMegaVault" target="_blank" rel="noopener">Subscribe on YouTube <span class="chev">&rarr;</span></a>
+            </footer>
+          </article>
+
+          <!-- NeoSoul Music channel -->
+          <article class="channel reveal" data-delay="2">
+            <header class="channel__head">
+              <span class="channel__mark" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.42-4.81ZM10 15V9l5 3Z"/></svg>
+              </span>
+              <span class="channel__id">
+                <span class="channel__name">NeoSoul Music</span>
+                <span class="channel__handle">@NeoSoulMusic26</span>
+              </span>
+            </header>
+
+            <!-- NeoSoul Music — featured video (latest upload). Swap data-yt + thumbnail to feature a different video. -->
+            <div class="embed-lazy" data-yt="Dv8crFNMlBo" role="button" tabindex="0"
+                 aria-label="Play NeoSoul Music video: NeoSoul Jazz Lounge Session"
+                 style="background:linear-gradient(rgba(10,10,10,0.2),rgba(10,10,10,0.55)),url('https://i.ytimg.com/vi/Dv8crFNMlBo/hqdefault.jpg') center/cover;">
+              <span class="embed-lazy__chip">Latest upload</span>
+              <span class="embed-lazy__chip embed-lazy__chip--right">Lo-Fi Soul</span>
+              <span class="embed-lazy__play" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </span>
             </div>
-          </div>
+
+            <footer class="channel__foot">
+              <p class="channel__desc">AI-composed neo-soul and jazz lounge sessions — warm, late-night listening for focus and calm.</p>
+              <a class="link-arrow" href="https://www.youtube.com/@NeoSoulMusic26" target="_blank" rel="noopener">Subscribe on YouTube <span class="chev">&rarr;</span></a>
+            </footer>
+          </article>
         </div>
       </div>
     </section>
@@ -211,16 +230,16 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">&#9733; Now Streaming</p>
-          <h2 class="section-title">Tha Mega Boy Band</h2>
-          <p class="section-sub lead">Brisbane's next sound. Stream the latest releases below.</p>
+          <h2 class="section-title">Tha MEGA BOY BAND</h2>
+          <p class="section-sub lead">One of the first entirely AI-created pop groups &mdash; voices, harmonies and lyrics generated, human emotion by design. Stream the latest releases below.</p>
         </div>
 
         <div class="spotify-strip reveal" data-delay="1">
-          <!-- Replace ARTIST_ID with the Spotify artist ID (Spotify for Artists). theme=0 = dark. -->
+          <!-- Tha MEGA BOY BAND — Spotify artist player. theme=0 = dark. -->
           <iframe
-            title="Tha Mega Boy Band on Spotify"
-            style="width:100%;height:352px;border:0;"
-            src="https://open.spotify.com/embed/artist/ARTIST_ID?utm_source=generator&theme=0"
+            title="Tha MEGA BOY BAND on Spotify"
+            style="width:100%;height:380px;border:0;"
+            src="https://open.spotify.com/embed/artist/6v0R5eHKsjwcvml4rpPpng?utm_source=generator&theme=0"
             loading="lazy"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
         </div>
@@ -251,7 +270,13 @@
           <div class="reveal">
             <p class="eyebrow">AI:M &middot; Artificial Intelligence: Mastery</p>
             <h2 class="section-title">AI isn't the future.<br/>It's now.</h2>
-            <p class="section-sub lead">Hands-on, beginner-friendly AI training. Brisbane-based, in-person and online. Four modules, real tools, a certificate of completion.</p>
+            <p class="section-sub lead">Master the tools reshaping the world. A beginner-friendly, four-module curriculum that takes you from foundations to creating your own AI-powered content.</p>
+            <ul class="ticks reveal" data-delay="1">
+              <li>Hands-on training with real AI tools</li>
+              <li>Beginner-friendly — no experience needed</li>
+              <li>Online and on demand, learn anywhere</li>
+              <li>Certificate of completion</li>
+            </ul>
             <div class="mt-2"><a class="btn btn--gold" href="#contact">Book a Workshop &rarr;</a></div>
           </div>
 
@@ -286,14 +311,14 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Who We Are</p>
-          <h2 class="section-title">A Brisbane studio at the intersection of music, hospitality and AI.</h2>
+          <h2 class="section-title">A studio at the intersection of music, AI and culture.</h2>
           <p class="section-sub lead">Black Star Media &amp; Entertainment manages a growing portfolio of ventures united by a commitment to culture, community and technology.</p>
         </div>
 
         <div class="grid grid--3">
           <div class="card reveal" data-delay="1">
             <h3 class="card__title gold">Culture</h3>
-            <p class="card__body">Brisbane stories, sounds and flavours — built for the people who live here and the world watching.</p>
+            <p class="card__body">Stories, sounds and ideas — crafted for audiences everywhere.</p>
           </div>
           <div class="card reveal" data-delay="2">
             <h3 class="card__title gold">Innovation</h3>
@@ -301,7 +326,7 @@
           </div>
           <div class="card reveal" data-delay="3">
             <h3 class="card__title gold">Community</h3>
-            <p class="card__body">From the pizza counter to the classroom, every venture is built to bring people together.</p>
+            <p class="card__body">From the studio to the classroom, every venture is built to bring people together.</p>
           </div>
         </div>
       </div>
@@ -313,7 +338,7 @@
         <div class="section-head section-head--center reveal">
           <p class="eyebrow">Get in Touch</p>
           <h2 class="section-title">Let's build something.</h2>
-          <p class="section-sub lead">Music, workshops, hospitality or media — tell us what you have in mind. We typically respond within 1&ndash;2 business days.</p>
+          <p class="section-sub lead">Music, workshops or media — tell us what you have in mind. We typically respond within 1&ndash;2 business days.</p>
         </div>
 
         <!-- Form posts to Formspree once you add your endpoint (see README). -->
@@ -334,7 +359,6 @@
               <option>General</option>
               <option>Music</option>
               <option>Workshops</option>
-              <option>Hospitality</option>
               <option>Media</option>
             </select>
           </div>
@@ -374,12 +398,12 @@
       <div class="footer__top">
         <div>
           <a class="wordmark" href="#top" style="font-size:1.2rem;">
+            <img class="wordmark__logo" src="assets/img/logo.png" alt="" aria-hidden="true" />
             <span class="w-black">BLACK</span><span class="w-star">&#9733;STAR</span><span class="w-media">MEDIA</span>
           </a>
           <p class="footer__tag">Entertainment. Technology. Culture.</p>
           <p class="footer__meta">
-            Brisbane, Queensland, Australia<br/>
-            ABN: 00 000 000 000 <span class="muted">(placeholder)</span><br/>
+            Independent entertainment, worldwide<br/>
             contact@blackstarmedia.com.au
           </p>
         </div>
@@ -397,13 +421,13 @@
           <div class="footer__col">
             <h4>Follow</h4>
             <div class="social" aria-label="Social links">
-              <a href="https://youtube.com/@AIMegaVault" target="_blank" rel="noopener" aria-label="AI MegaVault on YouTube">
+              <a href="https://www.youtube.com/@AiMegaVault" target="_blank" rel="noopener" aria-label="AI MEGA VAULT on YouTube">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 5 12 5 12 5s-7 0-8.9.4A3 3 0 0 0 1 7.5 31 31 0 0 0 .6 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1C5 19 12 19 12 19s7 0 8.9-.4A3 3 0 0 0 23 16.5 31 31 0 0 0 23.4 12 31 31 0 0 0 23 7.5zM9.8 15.3V8.7l5.7 3.3z"/></svg>
               </a>
-              <a href="https://youtube.com/@NeoSoulMusic" target="_blank" rel="noopener" aria-label="NeoSoul Music on YouTube">
+              <a href="https://www.youtube.com/@NeoSoulMusic26" target="_blank" rel="noopener" aria-label="NeoSoul Music on YouTube">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 5 12 5 12 5s-7 0-8.9.4A3 3 0 0 0 1 7.5 31 31 0 0 0 .6 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1C5 19 12 19 12 19s7 0 8.9-.4A3 3 0 0 0 23 16.5 31 31 0 0 0 23.4 12 31 31 0 0 0 23 7.5zM9.8 15.3V8.7l5.7 3.3z"/></svg>
               </a>
-              <a href="https://open.spotify.com" target="_blank" rel="noopener" aria-label="Tha Mega Boy Band on Spotify">
+              <a href="https://open.spotify.com/artist/6v0R5eHKsjwcvml4rpPpng" target="_blank" rel="noopener" aria-label="Tha MEGA BOY BAND on Spotify">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.63.63 0 1 1-.28-1.22c3.81-.87 7.08-.5 9.72 1.11.3.18.39.57.21.86zm1.23-2.74a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.16a.78.78 0 1 1-.45-1.49c3.64-1.1 8.16-.57 11.24 1.32.37.22.49.7.25 1.07zm.11-2.85C14.42 8.96 9.1 8.78 6.04 9.71a.94.94 0 1 1-.54-1.8c3.52-1.06 9.39-.85 13.09 1.34a.94.94 0 0 1-.96 1.61z"/></svg>
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
