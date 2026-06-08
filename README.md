@@ -1,6 +1,6 @@
 # Black Star Media &amp; Entertainment
 
-Flagship website for Black Star Media &amp; Entertainment — Brisbane, QLD.
+Flagship website for Black Star Media &amp; Entertainment.
 Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 **no build step**, deploys directly to GitHub Pages.
 
@@ -62,17 +62,20 @@ but a server is closer to production.)
 
 Search the codebase for these tokens and replace them:
 
-| Token / location | Replace with | Where to get it |
-|---|---|---|
-| `ARTIST_ID` (index.html, Spotify iframe) | Tha Mega Boy Band Spotify artist ID | Spotify for Artists |
-| `VIDEO_ID_AIMEGAVAULT` (`data-yt`) | Latest AI MegaVault video ID | YouTube Studio |
-| `VIDEO_ID_NEOSOUL` (`data-yt`) | Latest NeoSoul Music video ID | YouTube Studio |
-| `@AIMegaVault`, `@NeoSoulMusic` | Real channel handles | YouTube |
-| `ca-pub-XXXXXXXXXXXXXXXX` | AdSense publisher ID | Google AdSense |
-| `data-ad-slot="0000000000"` | AdSense slot IDs | Google AdSense |
-| `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> |
-| ABN `00 000 000 000` (footer) | Real ABN | ATO |
-| Social URLs (footer) | Real profile links | — |
+| Token / location | Replace with | Where to get it | Status |
+|---|---|---|---|
+| Spotify artist `6v0R5eHKsjwcvml4rpPpng` | Tha MEGA BOY BAND | Spotify | ✅ wired |
+| AI MEGA VAULT video `Kl5MOpvXuD8` + `@AiMegaVault` | Featured video / channel | YouTube | ✅ wired |
+| NeoSoul Music video `Dv8crFNMlBo` + `@NeoSoulMusic26` | Featured video / channel | YouTube | ✅ wired |
+| `ca-pub-XXXXXXXXXXXXXXXX` | AdSense publisher ID | Google AdSense | ⬜ todo |
+| `data-ad-slot="0000000000"` | AdSense slot IDs | Google AdSense | ⬜ todo |
+| `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo |
+| Instagram / TikTok / Facebook URLs (footer) | Real profile links | — | ⬜ todo |
+
+**Swapping the featured AI MEGA VAULT video:** in `index.html`, change the
+`data-yt="…"` value and the `hqdefault.jpg` thumbnail URL in the same block to
+the new 11-character video ID. (A static site can't auto-pull the latest upload
+without the YouTube Data API.)
 
 ### Venture imagery
 The venture cards and hero use CSS gradient fallbacks so the site looks finished
@@ -117,12 +120,19 @@ today. To use real photos, set a background image on `.venture__bg`, e.g.:
 
 ## Brand tokens (quick reference)
 
+Palette: Grok/xAI-style mono (dark theme, blue accent).
+
 ```
---color-black   #0A0A0A   --color-gold      #C9A84C
---color-white   #FFFFFF   --color-surface   #1C1C1E
---color-muted   #6E6E73   --font-display    Playfair Display
+--color-black   #000000   --color-gold*     #1D9BF0   (* accent — blue)
+--color-white   #FFFFFF   --color-surface   #16181C
+--color-muted   #71767B   --color-surface-2 #0E1013
+                          --font-display    Playfair Display
                           --font-body       DM Sans
                           --font-mono       Space Mono
 ```
+
+> Note: the accent custom property is still named `--color-gold` for
+> continuity — its value is now the accent blue. Change that one line to
+> re-theme every accent on the site.
 
 © 2026 Black Star Media &amp; Entertainment.
