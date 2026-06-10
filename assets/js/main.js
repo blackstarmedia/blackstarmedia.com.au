@@ -100,6 +100,30 @@
     });
   });
 
+  /* ---------- 5b. Latest YouTube uploads (auto-refresh) ----------------- */
+  // Pulls the newest video id per channel from a same-origin JSON file that a
+  // scheduled GitHub Action keeps current. Silently keeps the hard-coded
+  // data-yt/thumbnail fallback in the markup if the fetch fails.
+  var latestEmbeds = document.querySelectorAll(".embed-lazy[data-channel]");
+  if (latestEmbeds.length && "fetch" in window) {
+    fetch("assets/data/latest-videos.json", { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data || !data.channels) return;
+        latestEmbeds.forEach(function (box) {
+          var info = data.channels[box.getAttribute("data-channel")];
+          if (!info || !info.videoId || box.dataset.loaded) return;
+          var id = info.videoId;
+          box.setAttribute("data-yt", id);
+          box.style.background =
+            "linear-gradient(rgba(10,10,10,0.2),rgba(10,10,10,0.55))," +
+            "url('https://i.ytimg.com/vi/" + encodeURIComponent(id) + "/hqdefault.jpg') center/cover";
+          if (info.title) box.setAttribute("aria-label", "Play: " + info.title);
+        });
+      })
+      .catch(function () { /* keep static fallback */ });
+  }
+
   /* ---------- 6. Hero starfield (lightweight canvas) -------------------- */
   var canvas = document.getElementById("starfield");
   if (canvas && !prefersReduced) {
@@ -137,10 +161,10 @@
         if (s.a > 0.8 || s.a < 0.12) s.dir *= -1;
         s.y += s.vy;
         if (s.y > h) { s.y = -2; s.x = Math.random() * w; }
-        // red-tinted twinkle for a few; mostly white
+        // light-grey twinkle for a few; mostly white
         ctx.beginPath();
         ctx.fillStyle = (i % 9 === 0)
-          ? "rgba(229,9,20," + s.a.toFixed(2) + ")"
+          ? "rgba(203,208,216," + s.a.toFixed(2) + ")"
           : "rgba(255,255,255," + s.a.toFixed(2) + ")";
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
