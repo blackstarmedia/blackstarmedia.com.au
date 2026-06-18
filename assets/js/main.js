@@ -52,7 +52,7 @@
   }
 
   /* ---------- 4. Active nav link on scroll ------------------------------ */
-  var sections = ["ventures", "videos", "music", "workshops", "about"];
+  var sections = ["ventures", "videos", "downloads", "music", "workshops", "about"];
   var linkFor = {};
   document.querySelectorAll(".nav__link").forEach(function (a) {
     var id = a.getAttribute("href").replace("#", "");

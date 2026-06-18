@@ -65,6 +65,7 @@
       <nav class="nav__links" aria-label="Primary">
         <a class="nav__link" href="#ventures">Ventures</a>
         <a class="nav__link" href="#videos">Content</a>
+        <a class="nav__link" href="#downloads">Downloads</a>
         <a class="nav__link" href="#music">Music</a>
         <a class="nav__link" href="#workshops">AI:M Workshops</a>
         <a class="nav__link" href="#about">About</a>
@@ -83,6 +84,7 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
     <a href="#ventures">Ventures</a>
     <a href="#videos">Content</a>
+    <a href="#downloads">Downloads</a>
     <a href="#music">Music</a>
     <a href="#workshops">AI:M Workshops</a>
     <a href="#about">About</a>
@@ -221,6 +223,22 @@
               <a class="link-arrow" href="https://www.youtube.com/@NeoSoulMusic26" target="_blank" rel="noopener">Subscribe on YouTube <span class="chev">&rarr;</span></a>
             </footer>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== DOWNLOADS ============================== -->
+    <section class="section" id="downloads">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Free Resources</p>
+          <h2 class="section-title">Download our guides.</h2>
+          <p class="section-sub lead">PDF resources that go deeper on our YouTube content — yours to keep, free.</p>
+        </div>
+
+        <!-- Cards injected by downloads.js; shows placeholders until Drive is configured -->
+        <div class="dl-grid" id="downloadsGrid" aria-live="polite">
+          <p class="dl-empty">Loading resources&hellip;</p>
         </div>
       </div>
     </section>
@@ -413,6 +431,7 @@
             <h4>Explore</h4>
             <a href="#ventures">Ventures</a>
             <a href="#videos">Content</a>
+            <a href="#downloads">Downloads</a>
             <a href="#music">Music</a>
             <a href="#workshops">AI:M Workshops</a>
             <a href="#about">About</a>
@@ -451,6 +470,24 @@
     </div>
   </footer>
 
+  <!-- ============================== ADMIN MODAL (downloads) ============================== -->
+  <!-- Hidden; open with Shift + Alt + A -->
+  <div class="admin-modal" id="adminModal" role="dialog" aria-modal="true" aria-label="Upload PDF" hidden>
+    <div class="admin-modal__box">
+      <div class="admin-modal__head">
+        <span class="eyebrow" style="margin:0">Upload PDF to Drive</span>
+        <button class="admin-modal__close" id="adminClose" aria-label="Close">&times;</button>
+      </div>
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.6);margin-bottom:1.2rem;">
+        Sign in with the Google account that owns the downloads folder, then choose a PDF to upload. The file will appear in the Downloads section automatically.
+      </p>
+      <div id="adminBody">
+        <!-- Sign-in button or upload form injected by downloads.js -->
+      </div>
+    </div>
+  </div>
+
   <script src="assets/js/main.js?v=20260608" defer></script>
+  <script src="assets/js/downloads.js?v=1" defer></script>
 </body>
 </html>
