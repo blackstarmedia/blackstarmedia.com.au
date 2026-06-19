@@ -27,6 +27,12 @@ DL_DIR = os.path.join(ROOT, "assets", "downloads")
 OUT = os.path.join(ROOT, "assets", "data", "downloads.json")
 DEFAULT_GROUP = "Resources"
 
+# Folder names must be filesystem/URL-safe (no colons). Map a safe folder name to
+# the display label shown on the page when it differs from a plain humanise().
+GROUP_DISPLAY = {
+    "Suno-Visualised": "Suno:Visualised",
+}
+
 
 def humanise(filename):
     """guide_v2-final.pdf -> 'Guide V2 Final'."""
@@ -89,7 +95,7 @@ def collect():
 
     # Stable ordering: default group last, others alphabetical
     ordered = sorted(groups.keys(), key=lambda g: (g == DEFAULT_GROUP, g.lower()))
-    return [{"name": g, "items": groups[g]} for g in ordered]
+    return [{"name": GROUP_DISPLAY.get(g, humanise(g)), "items": groups[g]} for g in ordered]
 
 
 def main():

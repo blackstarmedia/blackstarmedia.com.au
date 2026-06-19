@@ -1,5 +1,18 @@
 {
-  "updated": null,
+  "updated": "2026-06-19T05:07:17Z",
   "source": "Google Drive · Website/Downloads",
-  "groups": []
+  "groups": [
+    {
+      "name": "Suno:Visualised",
+      "items": [
+        {
+          "title": "Suno Visualized — Workflow Booklet",
+          "description": "The complete AI MEGA VAULT music-video workflow — 16 chapters from audio prep and beat & energy mapping to AI video generation, editing and final export.",
+          "file": "assets/downloads/Suno-Visualised/Suno_Visualized_Workflow_Booklet_Compressed.pdf",
+          "type": "PDF",
+          "size": "30.5 MB"
+        }
+      ]
+    }
+  ]
 }
