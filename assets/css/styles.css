@@ -319,12 +319,33 @@ body.menu-open .mobile-menu a:nth-child(6) { transition-delay: .38s; }
   margin: 0 0 1.4rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--color-line);
 }
 .dl-card { display: flex; flex-direction: column; }
+.dl-card__cover { margin: -1.8rem -1.8rem 1.3rem; border-bottom: 1px solid var(--color-line); background: var(--color-surface-2); }
+.dl-card__cover img { width: 100%; height: auto; display: block; border-radius: var(--radius) var(--radius) 0 0; }
 .dl-card__type { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
 .dl-card__title { font-family: var(--font-display); font-size: 1.3rem; margin: 0.55rem 0 0.6rem; }
 .dl-card__desc { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.5; flex: 1 1 auto; }
-.dl-card__meta { color: var(--color-muted); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; margin: 1rem 0 1.2rem; }
-.dl-card .btn { align-self: flex-start; }
+.dl-card__meta { color: var(--color-muted); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; margin: 1rem 0 1.1rem; }
 .dl-empty { text-align: center; color: rgba(255,255,255,0.55); font-size: 1.02rem; padding: 2.5rem 0; }
+
+/* Email opt-in form on each download card */
+.dl-form { display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
+.dl-form__email {
+  width: 100%; padding: 0.7rem 0.9rem;
+  background: var(--color-surface-2); color: var(--color-white);
+  border: 1px solid var(--color-line-strong); border-radius: 10px;
+  font: inherit; font-size: 0.95rem;
+}
+.dl-form__email::placeholder { color: var(--color-muted); }
+.dl-form__email:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; border-color: transparent; }
+.dl-form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.dl-form__consent { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.8rem; line-height: 1.4; color: rgba(255,255,255,0.62); cursor: pointer; }
+.dl-form__consent input { margin-top: 0.2rem; accent-color: var(--color-gold); flex: 0 0 auto; }
+.dl-form__submit { align-self: stretch; justify-content: center; margin-top: 0.2rem; }
+.dl-form__submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+.dl-form__msg { font-size: 0.82rem; min-height: 1em; margin: 0; }
+.dl-form__msg.is-error { color: #ff8a8a; }
+.dl-form__msg.is-pending { color: var(--color-muted); }
+.dl-form__success { font-size: 0.92rem; line-height: 1.5; color: var(--color-gold); margin: auto 0 0; }
 
 /* Tick list (benefits / feature list) */
 .ticks { list-style: none; margin: 1.6rem 0 0; padding: 0; display: grid; gap: 0.7rem; }

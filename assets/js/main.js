@@ -124,11 +124,13 @@
       .catch(function () { /* keep static fallback */ });
   }
 
-  /* ---------- 5c. Downloads library (PDF resources) -------------------- */
+  /* ---------- 5c. Downloads — email-gated lead magnets ----------------- */
   // Renders the download cards on downloads.html from a same-origin JSON
-  // manifest. The PDFs themselves are mirrored into assets/downloads/ from
-  // the Google Drive "Website/Downloads" folder. Empty/failed states degrade
-  // to a friendly message instead of a blank page.
+  // manifest (display info only — the actual files live in Google Drive and are
+  // never linked here). Each card carries an email opt-in form; on submit we
+  // POST {key, email, consent} to a Google Apps Script web app (the "endpoint"
+  // in the manifest), which logs the address to a Google Sheet and emails the
+  // download link. Empty/failed states degrade to a friendly message.
   var dlList = document.getElementById("downloadsList");
   if (dlList && "fetch" in window) {
     var esc = function (s) {
@@ -136,21 +138,38 @@
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
       });
     };
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var endpoint = "";
     var renderEmpty = function (msg) {
       dlList.innerHTML = '<p class="dl-empty">' + esc(msg) + "</p>";
     };
     var cardHTML = function (item) {
-      var href = item.file || "#";
       var type = (item.type || "PDF").toUpperCase();
       var meta = [type, item.size].filter(Boolean).map(esc).join(" · ");
+      var key = esc(item.key || "");
+      var cover = item.cover
+        ? '<div class="dl-card__cover"><img src="' + esc(item.cover) + '" alt="' + esc(item.title || "") + ' cover" loading="lazy" /></div>'
+        : "";
       return (
         '<article class="card dl-card reveal is-visible">' +
-          '<span class="dl-card__type">' + esc(type) + " Download</span>" +
+          cover +
+          '<span class="dl-card__type">' + esc(type) + " &middot; free download</span>" +
           '<h3 class="dl-card__title">' + esc(item.title || "Untitled") + "</h3>" +
           (item.description ? '<p class="dl-card__desc">' + esc(item.description) + "</p>" : '<p class="dl-card__desc"></p>') +
           (meta ? '<p class="dl-card__meta">' + meta + "</p>" : "") +
-          '<a class="btn btn--gold" href="' + esc(href) + '" download>Download ' + esc(type) +
-            ' <span aria-hidden="true">&darr;</span></a>' +
+          '<form class="dl-form" data-key="' + key + '" novalidate>' +
+            '<label class="sr-only" for="dl-email-' + key + '">Your email address</label>' +
+            '<input class="dl-form__email" id="dl-email-' + key + '" type="email" name="email" ' +
+              'inputmode="email" autocomplete="email" placeholder="you@example.com" required />' +
+            // honeypot (hidden from humans; bots tend to fill it)
+            '<input class="dl-form__hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />' +
+            '<label class="dl-form__consent"><input type="checkbox" name="consent" required /> ' +
+              "<span>Email me this resource and occasional updates from Black Star Media. " +
+              "I can unsubscribe anytime.</span></label>" +
+            '<button class="btn btn--gold dl-form__submit" type="submit">Email me the ' + esc(type) +
+              ' <span aria-hidden="true">&rarr;</span></button>' +
+            '<p class="dl-form__msg" role="status" aria-live="polite"></p>' +
+          "</form>" +
         "</article>"
       );
     };
@@ -160,9 +179,53 @@
       var name = group.name ? '<h3 class="dl-group__name">' + esc(group.name) + "</h3>" : "";
       return '<div class="dl-group">' + name + '<div class="grid grid--3">' + items + "</div></div>";
     };
+
+    var setMsg = function (form, text, kind) {
+      var msg = form.querySelector(".dl-form__msg");
+      msg.textContent = text;
+      msg.className = "dl-form__msg" + (kind ? " is-" + kind : "");
+    };
+
+    var onSubmit = function (e) {
+      e.preventDefault();
+      var form = e.currentTarget;
+      if (form.dataset.sent) return;
+      var email = (form.email.value || "").trim();
+      var consent = form.consent.checked;
+      var honeypot = form.company.value;
+      if (honeypot) return;                                  // silent bot drop
+      if (!EMAIL_RE.test(email)) { setMsg(form, "Please enter a valid email address.", "error"); form.email.focus(); return; }
+      if (!consent) { setMsg(form, "Please tick the box so we can send it over.", "error"); return; }
+      if (!endpoint || endpoint.indexOf("PASTE_") === 0) { setMsg(form, "Downloads aren't configured yet — please check back soon.", "error"); return; }
+
+      var btn = form.querySelector(".dl-form__submit");
+      btn.disabled = true;
+      setMsg(form, "Sending…", "pending");
+
+      // Apps Script web apps don't return CORS headers we can read, so we use a
+      // no-cors POST with a simple (text/plain) body and treat completion as
+      // success. The script validates the key/email server-side.
+      fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ key: form.dataset.key, email: email, consent: true, source: location.href })
+      })
+        .then(function () {
+          form.dataset.sent = "1";
+          form.innerHTML = '<p class="dl-form__success">✓ Thank you! Check your inbox (and spam folder) — ' +
+            "your download link is on its way to <strong>" + esc(email) + "</strong>.</p>";
+        })
+        .catch(function () {
+          btn.disabled = false;
+          setMsg(form, "Something went wrong. Please try again in a moment.", "error");
+        });
+    };
+
     fetch("assets/data/downloads.json", { cache: "no-cache" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
+        endpoint = (data && data.endpoint) || "";
         var groups = (data && data.groups) || [];
         var total = groups.reduce(function (n, g) { return n + ((g.items && g.items.length) || 0); }, 0);
         if (!total) {
@@ -170,6 +233,9 @@
           return;
         }
         dlList.innerHTML = groups.map(groupHTML).join("");
+        dlList.querySelectorAll(".dl-form").forEach(function (f) {
+          f.addEventListener("submit", onSubmit);
+        });
       })
       .catch(function () {
         renderEmpty("Downloads are temporarily unavailable. Please try again later.");

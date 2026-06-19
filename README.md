@@ -34,16 +34,16 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 ├── robots.txt
 ├── sitemap.xml
 ├── scripts/
-│   ├── update_latest_videos.py     # Refresh latest-videos.json (GitHub Action)
-│   └── build_downloads_manifest.py # Rebuild downloads.json from assets/downloads/
+│   ├── update_latest_videos.py # Refresh latest-videos.json (GitHub Action)
+│   └── email-delivery.gs       # Apps Script web app: email capture + delivery
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
-│   ├── js/main.js        # Nav, reveals, starfield, lazy embeds, downloads render
+│   ├── js/main.js        # Nav, reveals, starfield, lazy embeds, downloads form
 │   ├── data/
 │   │   ├── latest-videos.json   # Newest YouTube upload per channel
-│   │   └── downloads.json       # PDF download manifest (groups → items)
-│   ├── downloads/        # Mirrored PDFs (synced from Drive Website/Downloads)
+│   │   └── downloads.json       # Download manifest (endpoint + groups → items)
 │   └── img/
+│       ├── downloads/    # Cover thumbnails for download cards
 │       ├── favicon.svg
 │       ├── ventures/     # Drop venture photography here
 │       ├── team/         # Founder headshot
@@ -107,33 +107,45 @@ today. To use real photos, set a background image on `.venture__bg`, e.g.:
 
 ---
 
-## Downloads page (PDF resources from Google Drive)
+## Downloads page (email-gated lead magnets)
 
-`downloads.html` is a data-driven download centre. It renders cards from
-`assets/data/downloads.json`; the PDFs themselves are mirrored into
-`assets/downloads/` (GitHub Pages serves them — visitors never touch Drive, and
-nothing in Drive needs to be public).
+`downloads.html` is an email opt-in download centre. Visitors enter their email
+to receive a resource; the address is saved to your list and an automated
+thank-you email delivers the download link. This builds the email database for
+later bulk sends.
 
-**Source of truth:** the Google Drive folder **`Website/Downloads`**. Each
-subfolder there (e.g. `Suno:Visualised`) becomes a section on the page; loose
-PDFs fall into a default "Resources" group.
+**How it fits together (no backend — static site + Google):**
 
-**Adding / updating downloads:**
+| Piece | Role |
+|---|---|
+| `assets/data/downloads.json` | Display manifest — `endpoint` + groups/items (title, description, size, cover, `key`). **No file URLs** (so the gate can't be bypassed). |
+| `assets/js/main.js` (§5c) | Renders cards + email form; POSTs `{key,email,consent}` to the endpoint. |
+| `scripts/email-delivery.gs` | Google Apps Script web app: validates, logs the email to a Google Sheet, emails the download link. |
+| Google Drive | Holds the actual PDFs (shared "Anyone with link"). Files are **not** hosted on the site. |
+| Google Sheet | "Black Star — Download Signups" — your email database (auto-created on first signup). |
 
-1. Upload PDFs into `Website/Downloads` (or a subfolder) in Google Drive.
-2. Ask Claude to "re-sync downloads" — it mirrors the PDFs into
-   `assets/downloads/<Group>/` and regenerates the manifest:
-   ```bash
-   python3 scripts/build_downloads_manifest.py
-   ```
-3. Commit `assets/downloads/` + `assets/data/downloads.json`.
+**First-time setup:** follow the step-by-step comment block at the top of
+[`scripts/email-delivery.gs`](scripts/email-delivery.gs). In short: create the
+Apps Script project, paste that file, deploy as a Web app ("Execute as: Me",
+"Who has access: Anyone"), and paste the resulting `/exec` URL into
+`downloads.json` → `endpoint`.
 
-Filenames become display titles automatically (humanised). To set a custom
-title or add a description, edit `downloads.json` after generating — the script
-preserves existing `title`/`description` values matched by file path on re-run.
+**Adding a new resource:**
 
-The page degrades gracefully: an empty manifest shows a friendly "new resources
-on their way" message, and a failed fetch shows a temporary-unavailable note.
+1. Put the PDF in Google Drive and share it "Anyone with the link → Viewer".
+2. Add an entry to `CONFIG.FILES` in `email-delivery.gs` (`key` → Drive file id
+   + title) and redeploy a new version of the web app.
+3. Add the matching display entry to `downloads.json` (same `key`, with title,
+   description, size, and optional `cover` image in `assets/img/downloads/`).
+
+The page degrades gracefully: an empty manifest shows a "new resources on their
+way" message, a missing `endpoint` shows a "not configured yet" note, and a
+failed send shows a retry message.
+
+> **Compliance (AU Spam Act 2003):** the form requires a consent checkbox, and
+> the delivery email identifies the sender and includes an unsubscribe line. For
+> large-scale bulk campaigns later, export the Sheet into a dedicated email tool
+> (MailerLite, Brevo, etc.) that handles unsubscribe + deliverability at scale.
 
 ---
 
