@@ -26,14 +26,23 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 
 ```
 .
-├── index.html            # The whole site (single page, anchored sections)
+├── index.html            # Home (single page, anchored sections)
+├── profile.html          # Company profile page
+├── downloads.html        # Download centre (renders from downloads.json)
 ├── CNAME                 # Custom domain for GitHub Pages
 ├── .nojekyll             # Tell GitHub Pages to serve files as-is (no Jekyll)
 ├── robots.txt
 ├── sitemap.xml
+├── scripts/
+│   ├── update_latest_videos.py     # Refresh latest-videos.json (GitHub Action)
+│   └── build_downloads_manifest.py # Rebuild downloads.json from assets/downloads/
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
-│   ├── js/main.js        # Nav, reveals, starfield, mobile menu, lazy embeds
+│   ├── js/main.js        # Nav, reveals, starfield, lazy embeds, downloads render
+│   ├── data/
+│   │   ├── latest-videos.json   # Newest YouTube upload per channel
+│   │   └── downloads.json       # PDF download manifest (groups → items)
+│   ├── downloads/        # Mirrored PDFs (synced from Drive Website/Downloads)
 │   └── img/
 │       ├── favicon.svg
 │       ├── ventures/     # Drop venture photography here
@@ -95,6 +104,36 @@ today. To use real photos, set a background image on `.venture__bg`, e.g.:
    tag and add your `data-ad-client` and `data-ad-slot` IDs.
 4. The placeholder boxes you see now are just visual stand-ins — they disappear
    once real ad units render.
+
+---
+
+## Downloads page (PDF resources from Google Drive)
+
+`downloads.html` is a data-driven download centre. It renders cards from
+`assets/data/downloads.json`; the PDFs themselves are mirrored into
+`assets/downloads/` (GitHub Pages serves them — visitors never touch Drive, and
+nothing in Drive needs to be public).
+
+**Source of truth:** the Google Drive folder **`Website/Downloads`**. Each
+subfolder there (e.g. `Suno:Visualised`) becomes a section on the page; loose
+PDFs fall into a default "Resources" group.
+
+**Adding / updating downloads:**
+
+1. Upload PDFs into `Website/Downloads` (or a subfolder) in Google Drive.
+2. Ask Claude to "re-sync downloads" — it mirrors the PDFs into
+   `assets/downloads/<Group>/` and regenerates the manifest:
+   ```bash
+   python3 scripts/build_downloads_manifest.py
+   ```
+3. Commit `assets/downloads/` + `assets/data/downloads.json`.
+
+Filenames become display titles automatically (humanised). To set a custom
+title or add a description, edit `downloads.json` after generating — the script
+preserves existing `title`/`description` values matched by file path on re-run.
+
+The page degrades gracefully: an empty manifest shows a friendly "new resources
+on their way" message, and a failed fetch shows a temporary-unavailable note.
 
 ---
 

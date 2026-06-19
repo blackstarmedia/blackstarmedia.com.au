@@ -124,6 +124,58 @@
       .catch(function () { /* keep static fallback */ });
   }
 
+  /* ---------- 5c. Downloads library (PDF resources) -------------------- */
+  // Renders the download cards on downloads.html from a same-origin JSON
+  // manifest. The PDFs themselves are mirrored into assets/downloads/ from
+  // the Google Drive "Website/Downloads" folder. Empty/failed states degrade
+  // to a friendly message instead of a blank page.
+  var dlList = document.getElementById("downloadsList");
+  if (dlList && "fetch" in window) {
+    var esc = function (s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    };
+    var renderEmpty = function (msg) {
+      dlList.innerHTML = '<p class="dl-empty">' + esc(msg) + "</p>";
+    };
+    var cardHTML = function (item) {
+      var href = item.file || "#";
+      var type = (item.type || "PDF").toUpperCase();
+      var meta = [type, item.size].filter(Boolean).map(esc).join(" · ");
+      return (
+        '<article class="card dl-card reveal is-visible">' +
+          '<span class="dl-card__type">' + esc(type) + " Download</span>" +
+          '<h3 class="dl-card__title">' + esc(item.title || "Untitled") + "</h3>" +
+          (item.description ? '<p class="dl-card__desc">' + esc(item.description) + "</p>" : '<p class="dl-card__desc"></p>') +
+          (meta ? '<p class="dl-card__meta">' + meta + "</p>" : "") +
+          '<a class="btn btn--gold" href="' + esc(href) + '" download>Download ' + esc(type) +
+            ' <span aria-hidden="true">&darr;</span></a>' +
+        "</article>"
+      );
+    };
+    var groupHTML = function (group) {
+      var items = (group.items || []).map(cardHTML).join("");
+      if (!items) return "";
+      var name = group.name ? '<h3 class="dl-group__name">' + esc(group.name) + "</h3>" : "";
+      return '<div class="dl-group">' + name + '<div class="grid grid--3">' + items + "</div></div>";
+    };
+    fetch("assets/data/downloads.json", { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        var groups = (data && data.groups) || [];
+        var total = groups.reduce(function (n, g) { return n + ((g.items && g.items.length) || 0); }, 0);
+        if (!total) {
+          renderEmpty("New resources are on their way — check back soon.");
+          return;
+        }
+        dlList.innerHTML = groups.map(groupHTML).join("");
+      })
+      .catch(function () {
+        renderEmpty("Downloads are temporarily unavailable. Please try again later.");
+      });
+  }
+
   /* ---------- 6. Hero starfield (lightweight canvas) -------------------- */
   var canvas = document.getElementById("starfield");
   if (canvas && !prefersReduced) {
