@@ -22,7 +22,7 @@
   // Email gate: the Apps Script web-app /exec URL (see scripts/email-delivery.gs).
   // Visitors enter their email -> we POST to this -> it logs the address to a
   // Google Sheet and emails the download link. Leave as-is to disable gating.
-  var EMAIL_ENDPOINT  = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  var EMAIL_ENDPOINT  = "https://script.google.com/macros/s/AKfycbwR-2ezEQyjHJATgvOpmf73lj6vFF3v7KU2QriK21VlBRNWtFIXUFUFBTU1h34UzbWZPQ/exec";
   // ─────────────────────────────────────────────────────────────────────────
 
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
