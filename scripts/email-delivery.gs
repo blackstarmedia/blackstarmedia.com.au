@@ -1,48 +1,41 @@
 /**
  * Black Star Media — Download delivery + email capture
  * =====================================================
- * A Google Apps Script web app that powers the email-gated downloads on
- * downloads.html. When a visitor submits the form it:
- *   1. validates the request (known resource key + valid email + consent),
+ * A Google Apps Script web app that powers the email-gated downloads in the
+ * Downloads section (index.html + assets/js/downloads.js). When a visitor
+ * submits the email form it:
+ *   1. validates the request (valid email + consent + the file really lives in
+ *      your downloads Drive folder),
  *   2. appends the address to a Google Sheet (your email database),
  *   3. emails them a sincere thank-you with the download link.
  *
- * The actual PDFs stay in Google Drive (never hosted on the public site), so the
- * email gate can't be bypassed by guessing a URL.
+ * downloads.js lists PDFs straight from the Drive folder and posts the chosen
+ * file's id here, so you DON'T maintain a per-file list in two places — any PDF
+ * you upload to the folder is automatically deliverable.
  *
  * ───────────────────────────────────────────────────────────────────────────
  * ONE-TIME SETUP
  * ───────────────────────────────────────────────────────────────────────────
- * 1. Go to https://script.google.com → New project. Paste this whole file in,
- *    replacing the default Code.gs. Name the project "Black Star Downloads".
- * 2. Fill in CONFIG below (FILES map at minimum). Each Drive file must be shared
- *    "Anyone with the link → Viewer".
+ * 1. https://script.google.com → New project. Paste this whole file in,
+ *    replacing the default Code.gs. Name it "Black Star Downloads".
+ * 2. Set DOWNLOADS_FOLDER_ID below to the SAME Drive folder id you put in
+ *    assets/js/downloads.js (DRIVE_FOLDER_ID). Adjust sender details if needed.
  * 3. Deploy → New deployment → type "Web app":
  *       Execute as:        Me (your@blackstarmedia.com.au)
  *       Who has access:    Anyone
- *    Click Deploy, authorise the scopes when prompted, and COPY the Web app URL
- *    (ends in /exec).
- * 4. Paste that URL into assets/data/downloads.json → "endpoint".
- * 5. (Optional) test by visiting the /exec URL in a browser — it should return
+ *    Deploy, authorise the scopes, and COPY the Web app URL (ends in /exec).
+ * 4. Paste that URL into assets/js/downloads.js → EMAIL_ENDPOINT.
+ * 5. (Optional) visit the /exec URL — it should return
  *    {"ok":true,"service":"black-star-downloads"}.
  *
- * The signups Sheet is created automatically on the first submission and lives
- * in your Drive as "Black Star — Download Signups". To use an existing sheet,
- * put its ID in CONFIG.SHEET_ID.
- *
- * When you add a new resource: add an entry to FILES here (key → Drive id),
- * redeploy (Deploy → Manage deployments → edit → Version: New version), and add
- * the matching display entry to downloads.json.
+ * The signups Sheet ("Black Star — Download Signups") is created automatically
+ * in your Drive on the first submission (or set SHEET_ID to use an existing one).
  */
 
 var CONFIG = {
-  // Resource key (must match downloads.json) → Drive file details.
-  FILES: {
-    "suno-visualized-workflow-booklet": {
-      id: "1EKteupnYVHGrCN80RvtYA1a-nY-VWVft",
-      title: "Suno Visualized — Workflow Booklet"
-    }
-  },
+  // MUST match DRIVE_FOLDER_ID in assets/js/downloads.js. Only PDFs inside this
+  // folder can be emailed (prevents the endpoint being used to send other files).
+  DOWNLOADS_FOLDER_ID: "YOUR_DRIVE_FOLDER_ID",
 
   // Leave blank to auto-create "Black Star — Download Signups" in your Drive,
   // or paste an existing spreadsheet ID to log there instead.
@@ -74,18 +67,20 @@ function doPost(e) {
       body = (e && e.parameter) || {};
     }
 
-    var key = String(body.key || "").trim();
+    var fileId = String(body.fileId || "").trim();
     var email = String(body.email || "").trim();
     var consent = body.consent === true || body.consent === "true" || body.consent === "on";
     var source = String(body.source || "").slice(0, 300);
 
-    var file = CONFIG.FILES[key];
-    if (!file) return json_({ ok: false, error: "unknown_resource" });
     if (!isValidEmail_(email)) return json_({ ok: false, error: "invalid_email" });
     if (!consent) return json_({ ok: false, error: "consent_required" });
 
-    logSignup_(email, key, file.title, consent, source);
-    sendDeliveryEmail_(email, file);
+    var file = getFolderFile_(fileId);   // null unless the file is in our folder
+    if (!file) return json_({ ok: false, error: "unknown_resource" });
+
+    var title = file.getName().replace(/\.pdf$/i, "");
+    logSignup_(email, fileId, title, consent, source);
+    sendDeliveryEmail_(email, fileId, title);
 
     return json_({ ok: true });
   } catch (err) {
@@ -95,6 +90,18 @@ function doPost(e) {
 
 function isValidEmail_(s) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+// Returns the Drive File only if it is a PDF located in DOWNLOADS_FOLDER_ID.
+function getFolderFile_(fileId) {
+  if (!fileId) return null;
+  var file;
+  try { file = DriveApp.getFileById(fileId); } catch (e) { return null; }
+  var parents = file.getParents();
+  while (parents.hasNext()) {
+    if (parents.next().getId() === CONFIG.DOWNLOADS_FOLDER_ID) return file;
+  }
+  return null;
 }
 
 function getSheet_() {
@@ -109,13 +116,13 @@ function getSheet_() {
   }
   var sh = ss.getSheetByName(CONFIG.SHEET_NAME) || ss.insertSheet(CONFIG.SHEET_NAME);
   if (sh.getLastRow() === 0) {
-    sh.appendRow(["Timestamp", "Email", "Resource key", "Resource title", "Consent", "Source"]);
+    sh.appendRow(["Timestamp", "Email", "File id", "Resource title", "Consent", "Source"]);
   }
   return sh;
 }
 
-function logSignup_(email, key, title, consent, source) {
-  getSheet_().appendRow([new Date(), email, key, title, consent ? "yes" : "no", source]);
+function logSignup_(email, fileId, title, consent, source) {
+  getSheet_().appendRow([new Date(), email, fileId, title, consent ? "yes" : "no", source]);
 }
 
 function getDownloadLink_(fileId) {
@@ -123,14 +130,14 @@ function getDownloadLink_(fileId) {
   return "https://drive.google.com/file/d/" + fileId + "/view?usp=sharing";
 }
 
-function sendDeliveryEmail_(email, file) {
-  var link = getDownloadLink_(file.id);
-  var subject = "Your download: " + file.title;
+function sendDeliveryEmail_(email, fileId, title) {
+  var link = getDownloadLink_(fileId);
+  var subject = "Your download: " + title;
 
   var plain =
     "Hi there,\n\n" +
     "Thank you so much — it genuinely means a lot that you wanted this.\n\n" +
-    "Here's your copy of \"" + file.title + "\":\n" + link + "\n\n" +
+    "Here's your copy of \"" + title + "\":\n" + link + "\n\n" +
     "I hope it's genuinely useful. If you ever get stuck or just want to share " +
     "what you're building, hit reply — your email comes straight to me.\n\n" +
     "Talk soon,\nLouis\n" + CONFIG.BUSINESS_NAME + "\n" + CONFIG.SITE_URL + "\n\n" +
@@ -148,7 +155,7 @@ function sendDeliveryEmail_(email, file) {
       '<div style="padding:26px 6px">' +
         "<p>Hi there,</p>" +
         "<p>Thank you so much &mdash; it genuinely means a lot that you wanted this. " +
-        "Here&rsquo;s your copy of <strong>" + escapeHtml_(file.title) + "</strong>:</p>" +
+        "Here&rsquo;s your copy of <strong>" + escapeHtml_(title) + "</strong>:</p>" +
         '<p style="text-align:center;margin:26px 0">' +
           '<a href="' + link + '" style="display:inline-block;background:#CBD0D8;color:#000;text-decoration:none;' +
           'font-weight:600;padding:13px 26px;border-radius:999px">Open your download &rarr;</a>' +

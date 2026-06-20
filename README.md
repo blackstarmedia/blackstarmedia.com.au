@@ -26,9 +26,8 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 
 ```
 .
-├── index.html            # Home (single page, anchored sections)
+├── index.html            # Home — all sections incl. #downloads + admin modal
 ├── profile.html          # Company profile page
-├── downloads.html        # Download centre (renders from downloads.json)
 ├── CNAME                 # Custom domain for GitHub Pages
 ├── .nojekyll             # Tell GitHub Pages to serve files as-is (no Jekyll)
 ├── robots.txt
@@ -38,12 +37,11 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 │   └── email-delivery.gs       # Apps Script web app: email capture + delivery
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
-│   ├── js/main.js        # Nav, reveals, starfield, lazy embeds, downloads form
+│   ├── js/main.js        # Nav, reveals, starfield, lazy embeds
+│   ├── js/downloads.js   # Downloads section: Drive listing + email gate + admin upload
 │   ├── data/
-│   │   ├── latest-videos.json   # Newest YouTube upload per channel
-│   │   └── downloads.json       # Download manifest (endpoint + groups → items)
+│   │   └── latest-videos.json   # Newest YouTube upload per channel
 │   └── img/
-│       ├── downloads/    # Cover thumbnails for download cards
 │       ├── favicon.svg
 │       ├── ventures/     # Drop venture photography here
 │       ├── team/         # Founder headshot
@@ -107,40 +105,48 @@ today. To use real photos, set a background image on `.venture__bg`, e.g.:
 
 ---
 
-## Downloads page (email-gated lead magnets)
+## Downloads section (Drive listing + email gate + admin upload)
 
-`downloads.html` is an email opt-in download centre. Visitors enter their email
-to receive a resource; the address is saved to your list and an automated
-thank-you email delivers the download link. This builds the email database for
-later bulk sends.
+The homepage `#downloads` section lists PDF resources straight from a Google
+Drive folder. Each card shows an **email opt-in form** — the visitor enters
+their email, the address is saved to your list, and an automated thank-you email
+delivers the download link. There's also a hidden **admin panel** to upload new
+PDFs to Drive from the browser.
 
 **How it fits together (no backend — static site + Google):**
 
 | Piece | Role |
 |---|---|
-| `assets/data/downloads.json` | Display manifest — `endpoint` + groups/items (title, description, size, cover, `key`). **No file URLs** (so the gate can't be bypassed). |
-| `assets/js/main.js` (§5c) | Renders cards + email form; POSTs `{key,email,consent}` to the endpoint. |
-| `scripts/email-delivery.gs` | Google Apps Script web app: validates, logs the email to a Google Sheet, emails the download link. |
-| Google Drive | Holds the actual PDFs (shared "Anyone with link"). Files are **not** hosted on the site. |
+| `assets/js/downloads.js` | Lists PDFs from the Drive folder (Drive API), renders cards with the email form, runs the admin upload modal. |
+| Google Drive folder | Holds the PDFs (shared "Anyone with link → Viewer"). |
+| `scripts/email-delivery.gs` | Apps Script web app: validates the file is in your folder, logs the email to a Google Sheet, emails the download link. |
 | Google Sheet | "Black Star — Download Signups" — your email database (auto-created on first signup). |
 
-**First-time setup:** follow the step-by-step comment block at the top of
-[`scripts/email-delivery.gs`](scripts/email-delivery.gs). In short: create the
-Apps Script project, paste that file, deploy as a Web app ("Execute as: Me",
-"Who has access: Anyone"), and paste the resulting `/exec` URL into
-`downloads.json` → `endpoint`.
+**Setup — two parts:**
 
-**Adding a new resource:**
+1. **Listing + admin upload** — follow the header comment in
+   [`assets/js/downloads.js`](assets/js/downloads.js): create a Google Cloud
+   project, enable the Drive API, make an API key + OAuth client ID, create the
+   Drive folder (share "Anyone with link → Viewer"), and fill in
+   `DRIVE_API_KEY`, `DRIVE_CLIENT_ID`, `DRIVE_FOLDER_ID`.
+2. **Email gate** — follow the header in
+   [`scripts/email-delivery.gs`](scripts/email-delivery.gs): paste it into a new
+   Apps Script project, set `DOWNLOADS_FOLDER_ID` to the **same** folder id,
+   deploy as a Web app ("Execute as: Me", "Who has access: Anyone"), and put the
+   `/exec` URL into `downloads.js` → `EMAIL_ENDPOINT`.
 
-1. Put the PDF in Google Drive and share it "Anyone with the link → Viewer".
-2. Add an entry to `CONFIG.FILES` in `email-delivery.gs` (`key` → Drive file id
-   + title) and redeploy a new version of the web app.
-3. Add the matching display entry to `downloads.json` (same `key`, with title,
-   description, size, and optional `cover` image in `assets/img/downloads/`).
+**Adding a resource:** open the admin panel (**Shift + Alt + A**), sign in, and
+upload the PDF — it appears in the section automatically and is immediately
+deliverable (no per-file config; the script accepts any PDF in the folder).
 
-The page degrades gracefully: an empty manifest shows a "new resources on their
-way" message, a missing `endpoint` shows a "not configured yet" note, and a
-failed send shows a retry message.
+Degrades gracefully: before keys are set it shows placeholder "coming soon"
+cards; if `EMAIL_ENDPOINT` is unset it shows a direct download link instead of
+the form.
+
+> **Gate strength:** because the folder is listed client-side, file ids are
+> visible in the page, so a technical user could derive a direct Drive link —
+> the gate captures ~all normal visitors but isn't airtight. For a strict gate,
+> switch to server-side listing (Apps Script `doGet`) with a private folder.
 
 > **Compliance (AU Spam Act 2003):** the form requires a consent checkbox, and
 > the delivery email identifies the sender and includes an unsubscribe line. For
