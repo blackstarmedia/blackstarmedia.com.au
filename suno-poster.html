@@ -52,86 +52,18 @@
       padding-top: 2rem;
     }
 
-    /* Poster preview card */
+    /* Poster preview image */
     .lp-preview {
       display: flex;
       justify-content: center;
-    }
-    .lp-preview__card {
-      position: relative;
-      width: 100%;
-      max-width: 340px;
-      aspect-ratio: 0.707; /* A-series paper */
-      background: linear-gradient(145deg, #16181C 0%, #0a0b0d 100%);
-      border: 1px solid var(--color-line-strong);
-      border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 1.2rem;
-      padding: 2rem 1.75rem;
-      overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
     }
-    .lp-preview__card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(203,208,216,0.09), transparent 65%);
-      pointer-events: none;
-    }
-
-    .lp-preview__label {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--color-gold);
-      border: 1px solid rgba(203,208,216,0.35);
-      border-radius: var(--radius-pill);
-      padding: 0.3rem 0.85rem;
-      backdrop-filter: blur(6px);
-    }
-
-    .lp-preview__icon {
-      color: var(--color-gold);
-      opacity: 0.85;
-    }
-
-    /* Neural-net decorative SVG */
-    .lp-preview__net {
+    .lp-preview__img {
       width: 100%;
-      opacity: 0.55;
-      flex-shrink: 0;
-    }
-
-    .lp-preview__title {
-      font-family: var(--font-display);
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
-      font-weight: 600;
-      text-align: center;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
-    .lp-preview__title span {
+      max-width: 420px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
       display: block;
-      color: var(--color-gold);
-      font-size: 0.78em;
-      font-family: var(--font-mono);
-      letter-spacing: 0.12em;
-      font-weight: 400;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-    }
-
-    .lp-preview__meta {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      color: var(--color-muted);
-      text-transform: uppercase;
     }
 
     /* Form side */
@@ -193,23 +125,7 @@
       font-size: 1.3rem;
       color: var(--color-gold);
     }
-    .lp-success__dl {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      background: var(--color-gold);
-      color: var(--color-black);
-      font-weight: 600;
-      padding: 0.95rem 1.6rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.98rem;
-      transition: background .3s var(--ease), transform .4s var(--ease);
-      text-decoration: none;
-      width: fit-content;
-    }
-    .lp-success__dl:hover { background: var(--color-gold-bright); transform: translateY(-2px); }
     .lp-success__view { font-size: 0.85rem; color: var(--color-muted); }
-    .lp-success__view a { color: var(--color-gold); }
 
     /* What's inside */
     .lp-features { background: var(--color-surface-2); }
@@ -256,71 +172,13 @@
 
       <div class="container lp-hero__inner">
 
-        <!-- PDF preview mockup -->
+        <!-- PDF preview image -->
         <div class="lp-preview reveal">
-          <div class="lp-preview__card">
-            <span class="lp-preview__label">Free PDF Poster</span>
-
-            <!-- Decorative neural-net SVG -->
-            <svg class="lp-preview__net" viewBox="0 0 280 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Input layer -->
-              <circle cx="28" cy="20"  r="7" fill="#CBD0D8" opacity=".7"/>
-              <circle cx="28" cy="60"  r="7" fill="#CBD0D8" opacity=".7"/>
-              <circle cx="28" cy="100" r="7" fill="#CBD0D8" opacity=".7"/>
-              <!-- Hidden layer 1 -->
-              <circle cx="100" cy="10"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="100" cy="40"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="100" cy="70"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="100" cy="100" r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="100" cy="115" r="7" fill="#CBD0D8" opacity=".55"/>
-              <!-- Hidden layer 2 -->
-              <circle cx="180" cy="25"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="180" cy="60"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <circle cx="180" cy="95"  r="7" fill="#CBD0D8" opacity=".55"/>
-              <!-- Output layer -->
-              <circle cx="252" cy="40"  r="7" fill="#CBD0D8" opacity=".9"/>
-              <circle cx="252" cy="80"  r="7" fill="#CBD0D8" opacity=".9"/>
-              <!-- Connections input → h1 -->
-              <line x1="35" y1="20"  x2="93" y2="10"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="20"  x2="93" y2="40"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="20"  x2="93" y2="70"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="20"  x2="93" y2="100" stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="60"  x2="93" y2="10"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="60"  x2="93" y2="40"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="60"  x2="93" y2="70"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="60"  x2="93" y2="100" stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="60"  x2="93" y2="115" stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="100" x2="93" y2="40"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="100" x2="93" y2="70"  stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="100" x2="93" y2="100" stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <line x1="35" y1="100" x2="93" y2="115" stroke="rgba(203,208,216,0.22)" stroke-width="1"/>
-              <!-- Connections h1 → h2 -->
-              <line x1="107" y1="10"  x2="173" y2="25" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="10"  x2="173" y2="60" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="40"  x2="173" y2="25" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="40"  x2="173" y2="60" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="40"  x2="173" y2="95" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="70"  x2="173" y2="25" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="70"  x2="173" y2="60" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="70"  x2="173" y2="95" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="100" x2="173" y2="60" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="100" x2="173" y2="95" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <line x1="107" y1="115" x2="173" y2="95" stroke="rgba(203,208,216,0.18)" stroke-width="1"/>
-              <!-- Connections h2 → output -->
-              <line x1="187" y1="25" x2="245" y2="40" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-              <line x1="187" y1="25" x2="245" y2="80" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-              <line x1="187" y1="60" x2="245" y2="40" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-              <line x1="187" y1="60" x2="245" y2="80" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-              <line x1="187" y1="95" x2="245" y2="40" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-              <line x1="187" y1="95" x2="245" y2="80" stroke="rgba(203,208,216,0.28)" stroke-width="1.2"/>
-            </svg>
-
-            <p class="lp-preview__title">
-              <span>Suno AI</span>
-              Deep Learning<br/>Visualized
-            </p>
-            <p class="lp-preview__meta">21 pages &middot; Free PDF</p>
-          </div>
+          <img
+            class="lp-preview__img"
+            src="assets/img/guide-preview.png"
+            alt="Preview of the Suno AI Deep Learning Visualized guide"
+          />
         </div>
 
         <!-- Form column -->
@@ -365,23 +223,8 @@
           <!-- Success state -->
           <div class="lp-success" id="captureSuccess" hidden>
             <p class="lp-success__heading">You&rsquo;re all set!</p>
-            <p style="color:rgba(255,255,255,0.78);">Your poster is on its way to your inbox. While you wait, grab it here:</p>
-            <a
-              class="lp-success__dl"
-              href="assets/pdf/suno-visualized-dl-poster.pdf"
-              download="Suno-Visualized-Deep-Learning-Poster.pdf"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download PDF now
-            </a>
-            <p class="lp-success__view">
-              Or <a href="assets/pdf/suno-visualized-dl-poster.pdf" target="_blank" rel="noopener">open in browser</a>
-              &nbsp;&middot;&nbsp; Check your spam folder if the email doesn&rsquo;t arrive in a few minutes.
-            </p>
+            <p style="color:rgba(255,255,255,0.78);">Your guide is on its way — check your inbox in the next minute or two.</p>
+            <p class="lp-success__view">Check your spam folder if it doesn&rsquo;t arrive shortly.</p>
           </div>
         </div>
 
