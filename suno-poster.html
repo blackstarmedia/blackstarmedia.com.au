@@ -348,6 +348,9 @@
     function showSuccess() {
       form.hidden = true;
       success.removeAttribute("hidden");
+      setTimeout(function () {
+        window.location.href = "https://blackstarmedia.com.au";
+      }, 2500);
     }
 
     function setMsg(text, kind) {
