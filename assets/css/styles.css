@@ -575,6 +575,53 @@ body.menu-open .mobile-menu a:nth-child(7) { transition-delay: .44s; }
   .dl-grid { grid-template-columns: 1fr; }
 }
 
+/* ---------- 18. Suno tips section ----------------------------------------- */
+/* "The goal" pill strip — echoes the poster's goal panel */
+.tips-goal {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+.tips-goal__pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--color-gold);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+/* Grid of the 10 tip categories */
+.tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+.tipcard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  transition: transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
+}
+.tipcard:hover { transform: translateY(-4px); border-color: var(--color-line-strong); box-shadow: 0 18px 44px rgba(0,0,0,0.4); }
+
+.tipcard__head { display: flex; align-items: baseline; gap: 0.8rem; margin-bottom: 1.1rem; }
+.tipcard__num  { font-family: var(--font-mono); color: var(--color-gold); font-size: 0.8rem; letter-spacing: 0.1em; }
+.tipcard__title { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.1; }
+
+/* Numbered list keeps the poster's running 1–100 numbering via the start attr */
+.tipcard__list { margin: 0; padding-left: 2.4rem; list-style: decimal; display: grid; gap: 0.55rem; }
+.tipcard__list li {
+  color: rgba(255,255,255,0.74); font-size: 0.95rem; line-height: 1.45;
+  padding-left: 0.3rem;
+}
+.tipcard__list li::marker {
+  font-family: var(--font-mono); font-size: 0.74rem;
+  color: var(--color-muted);
+}
+
+@media (max-width: 860px) {
+  .tips-grid { grid-template-columns: 1fr; }
+}
+
 /* Utility */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .center { text-align: center; }
