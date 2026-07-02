@@ -5,6 +5,8 @@ on a schedule; no API key required (uses YouTube's public RSS feeds)."""
 
 import json
 import os
+import time
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -21,12 +23,22 @@ NS = {
 }
 FEED = "https://www.youtube.com/feeds/videos.xml?channel_id={}"
 OUT = os.path.join(os.path.dirname(__file__), "..", "assets", "data", "latest-videos.json")
+RETRIES = 3
+RETRY_DELAY = 5  # seconds
 
 
 def latest(channel_id):
     req = urllib.request.Request(FEED.format(channel_id), headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        root = ET.fromstring(r.read())
+    for attempt in range(1, RETRIES + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                root = ET.fromstring(r.read())
+            break
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            if attempt == RETRIES:
+                raise
+            print(f"Attempt {attempt} for {channel_id} failed ({e}); retrying...")
+            time.sleep(RETRY_DELAY)
     entry = root.find("atom:entry", NS)  # feed lists newest entry first
     if entry is None:
         return None
