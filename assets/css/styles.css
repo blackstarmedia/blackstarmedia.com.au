@@ -641,3 +641,79 @@ body.menu-open .mobile-menu a:nth-child(7) { transition-delay: .44s; }
 /* Cookie consent banner styles are injected by assets/js/consent.js so the
    banner renders consistently even on pages (e.g. pipeline.html) that don't
    load this stylesheet. */
+
+/* ---------- Inline pipeline accordion ("How We Work", index.html #process) */
+.pl-wrap { border-top: 1px solid var(--color-line); margin-top: 1rem; }
+.pl-stage { border-bottom: 1px solid var(--color-line); }
+.pl-stage:nth-child(even) { background: var(--color-surface-2); }
+.pl-stage-btn {
+  width: 100%; border: 0; background: none; color: inherit; cursor: pointer; text-align: left;
+  font-family: inherit; padding: clamp(1.3rem, 3vw, 1.9rem) clamp(1rem, 4vw, 1.6rem);
+  display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.6rem); transition: background 0.2s var(--ease);
+}
+.pl-stage-btn:hover { background: rgba(203,208,216,0.05); }
+.pl-stage-num {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.18em; color: var(--color-gold);
+  flex: 0 0 auto; width: 6.8rem; text-transform: uppercase;
+}
+.pl-stage-title {
+  font-family: var(--font-display); font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 600;
+  line-height: 1; letter-spacing: -0.01em; flex: 1 1 auto;
+}
+.pl-toggle {
+  flex: 0 0 auto; width: 26px; height: 26px; position: relative;
+  border: 1px solid var(--color-gold); border-radius: 50%; transition: background 0.2s var(--ease);
+}
+.pl-toggle::before, .pl-toggle::after {
+  content: ""; position: absolute; background: var(--color-gold-bright); top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.pl-toggle::before { width: 11px; height: 1.5px; }
+.pl-toggle::after { width: 1.5px; height: 11px; transition: transform 0.3s var(--ease); }
+.pl-stage-btn[aria-expanded="true"] .pl-toggle { background: rgba(203,208,216,0.14); }
+.pl-stage-btn[aria-expanded="true"] .pl-toggle::after { transform: translate(-50%,-50%) scaleY(0); }
+
+.pl-panel { overflow: hidden; max-height: 0; transition: max-height 0.42s var(--ease); }
+.pl-panel-inner { padding: 0 clamp(1rem, 4vw, 1.6rem) clamp(1.6rem, 4vw, 2.4rem); }
+.pl-stage-desc {
+  color: rgba(255,255,255,0.72); max-width: 54ch; font-size: 0.98rem; margin: -0.2rem 0 0.5rem; padding-left: 8rem;
+}
+@media (max-width: 760px) { .pl-stage-num { width: 3.2rem; } .pl-stage-desc { padding-left: 0; } }
+
+.pl-sub {
+  border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-surface);
+  margin-bottom: 0.9rem; transition: border-color 0.25s var(--ease);
+}
+.pl-sub:last-child { margin-bottom: 0; }
+.pl-sub[data-open="true"] { border-color: var(--color-line-strong); }
+.pl-sub-btn {
+  width: 100%; border: 0; background: none; color: inherit; cursor: pointer; text-align: left;
+  font-family: inherit; padding: 1.1rem 1.3rem; display: flex; align-items: center; gap: 1rem;
+}
+.pl-glyph {
+  flex: 0 0 44px; height: 44px; border: 1px solid var(--color-line-strong); border-radius: 8px;
+  display: grid; place-items: center; color: var(--color-gold); background: rgba(203,208,216,0.05);
+}
+.pl-glyph svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.pl-sub-meta { flex: 1 1 auto; }
+.pl-sub-label { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.15; margin-bottom: 0.15rem; font-weight: 600; }
+.pl-sub-tools { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.1em; color: var(--color-gold); text-transform: uppercase; }
+.pl-chev {
+  flex: 0 0 auto; width: 10px; height: 10px; border-right: 1.5px solid var(--color-gold);
+  border-bottom: 1.5px solid var(--color-gold); transform: rotate(45deg); transition: transform 0.3s var(--ease); margin-right: 0.3rem;
+}
+.pl-sub-btn[aria-expanded="true"] .pl-chev { transform: rotate(-135deg); }
+.pl-sub-body { padding: 0 1.3rem 1.25rem 3.7rem; }
+.pl-sub-note { color: rgba(255,255,255,0.72); font-size: 0.94rem; line-height: 1.55; margin-bottom: 1rem; }
+@media (max-width: 560px) { .pl-sub-body { padding-left: 1.3rem; } }
+
+.pl-tasks-btn {
+  border: 0; background: none; cursor: pointer; color: var(--color-gold); font-family: var(--font-mono);
+  font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; display: inline-flex; align-items: center;
+  gap: 0.45rem; padding: 0.2rem 0;
+}
+.pl-tasks-btn .pl-plus { font-size: 0.9rem; line-height: 0; transition: transform 0.3s var(--ease); }
+.pl-tasks-btn[aria-expanded="true"] .pl-plus { transform: rotate(45deg); }
+.pl-tasks { list-style: none; margin-top: 0.8rem; padding: 0; }
+.pl-tasks li { position: relative; padding: 0.4rem 0 0.4rem 1.3rem; font-size: 0.92rem; color: rgba(255,255,255,0.72); border-top: 1px solid var(--color-line); }
+.pl-tasks li:first-child { border-top: 0; }
+.pl-tasks li::before { content: ""; position: absolute; left: 0; top: 0.88rem; width: 6px; height: 6px; background: var(--color-gold); transform: rotate(45deg); }

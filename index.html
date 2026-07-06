@@ -74,6 +74,7 @@
         <a class="nav__link" href="#ventures">Ventures</a>
         <a class="nav__link" href="#videos">Content</a>
         <a class="nav__link" href="#suno-tips">Suno Tips</a>
+        <a class="nav__link" href="#process">Our Process</a>
         <a class="nav__link" href="#downloads">Downloads</a>
         <a class="nav__link" href="#music">Music</a>
         <a class="nav__link" href="#workshops">AI:M Workshops</a>
@@ -95,6 +96,7 @@
     <a href="#ventures">Ventures</a>
     <a href="#videos">Content</a>
     <a href="#suno-tips">Suno Tips</a>
+    <a href="#process">Our Process</a>
     <a href="#downloads">Downloads</a>
     <a href="#music">Music</a>
     <a href="#workshops">AI:M Workshops</a>
@@ -374,18 +376,30 @@
       </div>
     </section>
 
+    <!-- ============================== HOW WE WORK (inline pipeline) ============================== -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">&#9733; How We Work</p>
+          <h2 class="section-title">Six stages. One repeatable engine.</h2>
+          <p class="section-sub lead">Every Black Star release runs the same path &mdash; think, write, generate, assemble, publish, monetise. Tap a stage to open it, tap a tool to read what it&rsquo;s for, then expand for the exact steps.</p>
+        </div>
+
+        <div class="pl-wrap" id="processApp"></div>
+
+        <p class="center muted reveal" data-delay="1" style="margin-top:2rem;font-size:0.92rem;">
+          Want the full picture, including the live projects proving it works? <a class="gold" href="pipeline.html">See the complete pipeline &rarr;</a>
+        </p>
+      </div>
+    </section>
+
     <!-- ============================== DOWNLOADS ============================== -->
-    <section class="section" id="downloads">
+    <section class="section section--surface" id="downloads">
       <div class="container">
         <div class="section-head reveal">
           <p class="eyebrow">Free Resources</p>
           <h2 class="section-title">Download our guides.</h2>
           <p class="section-sub lead">PDF resources that go deeper on our YouTube content — yours to keep, free.</p>
-        </div>
-
-        <!-- Cards injected by downloads.js; shows placeholders until Drive is configured -->
-        <div class="dl-grid" id="downloadsGrid" aria-live="polite">
-          <p class="dl-empty">Loading resources&hellip;</p>
         </div>
 
         <!-- Featured standalone resource -->
@@ -602,6 +616,7 @@
             <a href="#ventures">Ventures</a>
             <a href="#videos">Content</a>
             <a href="#suno-tips">Suno Tips</a>
+            <a href="#process">Our Process</a>
             <a href="#downloads">Downloads</a>
             <a href="#music">Music</a>
             <a href="#workshops">AI:M Workshops</a>
@@ -643,25 +658,8 @@
     </div>
   </footer>
 
-  <!-- ============================== ADMIN MODAL (downloads) ============================== -->
-  <!-- Hidden; open with Shift + Alt + A -->
-  <div class="admin-modal" id="adminModal" role="dialog" aria-modal="true" aria-label="Upload PDF" hidden>
-    <div class="admin-modal__box">
-      <div class="admin-modal__head">
-        <span class="eyebrow" style="margin:0">Upload PDF to Drive</span>
-        <button class="admin-modal__close" id="adminClose" aria-label="Close">&times;</button>
-      </div>
-      <p style="font-size:0.9rem;color:rgba(255,255,255,0.6);margin-bottom:1.2rem;">
-        Sign in with the Google account that owns the downloads folder, then choose a PDF to upload. The file will appear in the Downloads section automatically.
-      </p>
-      <div id="adminBody">
-        <!-- Sign-in button or upload form injected by downloads.js -->
-      </div>
-    </div>
-  </div>
-
   <script src="assets/js/main.js?v=20260706" defer></script>
-  <script src="assets/js/downloads.js?v=20260706" defer></script>
+  <script src="assets/js/process.js?v=20260706" defer></script>
   <script src="assets/js/consent.js?v=20260706" defer></script>
 </body>
 </html>
