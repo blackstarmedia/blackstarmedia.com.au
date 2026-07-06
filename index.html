@@ -28,14 +28,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;700;800&family=Space+Mono&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260620" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6512943011057060" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260706" />
 
-  <!-- ============================================================
-       GOOGLE ADSENSE — paste your publisher ID below to activate.
-       Replace ca-pub-XXXXXXXXXXXXXXXX, then uncomment the script.
-       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-       ============================================================ -->
+  <!-- Consent Mode defaults — must run before the AdSense script -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6512943011057060" crossorigin="anonymous"></script>
 
   <!-- Structured data: Organization -->
   <script type="application/ld+json">
@@ -123,7 +130,7 @@
         <div class="ad-slot ad-slot--leaderboard reveal">
           <span class="ad-slot__label">Advertisement</span>
           <div class="ad-slot__box">Leaderboard 728&times;90
-            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6512943011057060" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
           </div>
         </div>
       </div>
@@ -437,7 +444,7 @@
         <div class="ad-slot ad-slot--rectangle reveal">
           <span class="ad-slot__label">Advertisement</span>
           <div class="ad-slot__box">Rectangle 300&times;250
-            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="rectangle"></ins> -->
+            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6512943011057060" data-ad-slot="0000000000" data-ad-format="rectangle"></ins> -->
           </div>
         </div>
       </div>
@@ -565,7 +572,7 @@
         <div class="ad-slot ad-slot--billboard reveal">
           <span class="ad-slot__label">Advertisement</span>
           <div class="ad-slot__box">Billboard 970&times;90
-            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6512943011057060" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
           </div>
         </div>
       </div>
@@ -631,7 +638,7 @@
 
       <div class="footer__bottom">
         <span>&copy; 2026 Black Star Media &amp; Entertainment. All rights reserved.</span>
-        <span><a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Use</a></span>
+        <span><a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms.html">Terms of Use</a></span>
       </div>
     </div>
   </footer>
@@ -653,7 +660,8 @@
     </div>
   </div>
 
-  <script src="assets/js/main.js?v=20260620" defer></script>
-  <script src="assets/js/downloads.js?v=20260620" defer></script>
+  <script src="assets/js/main.js?v=20260706" defer></script>
+  <script src="assets/js/downloads.js?v=20260706" defer></script>
+  <script src="assets/js/consent.js?v=20260706" defer></script>
 </body>
 </html>

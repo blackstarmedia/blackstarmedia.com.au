@@ -24,7 +24,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;700;800&family=Space+Mono&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260620" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260706" />
+
+  <!-- Consent Mode defaults — must run before the AdSense script -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+  </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6512943011057060" crossorigin="anonymous"></script>
 
   <style>
@@ -322,7 +335,7 @@
       </div>
       <div class="footer__bottom">
         <span>&copy; 2026 Black Star Media &amp; Entertainment. All rights reserved.</span>
-        <span><a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Use</a></span>
+        <span><a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms.html">Terms of Use</a></span>
       </div>
     </div>
   </footer>
@@ -481,5 +494,6 @@
   })();
   </script>
 
+  <script src="assets/js/consent.js?v=20260706" defer></script>
 </body>
 </html>
