@@ -74,8 +74,8 @@ Search the codebase for these tokens and replace them:
 | Spotify artist `6v0R5eHKsjwcvml4rpPpng` | Tha MEGA BOY BAND | Spotify | ✅ wired |
 | AI MEGA VAULT video `Kl5MOpvXuD8` + `@AiMegaVault` | Featured video / channel | YouTube | ✅ wired |
 | NeoSoul Music video `Dv8crFNMlBo` + `@NeoSoulMusic26` | Featured video / channel | YouTube | ✅ wired |
-| `ca-pub-XXXXXXXXXXXXXXXX` | AdSense publisher ID | Google AdSense | ⬜ todo |
-| `data-ad-slot="0000000000"` | AdSense slot IDs | Google AdSense | ⬜ todo |
+| AdSense publisher ID | `ca-pub-6512943011057060` | Google AdSense | ✅ wired |
+| `data-ad-slot="0000000000"` | Real AdSense slot IDs (once you create ad units) | Google AdSense | ⬜ todo |
 | `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo |
 | Instagram / TikTok / Facebook URLs (footer) | Real profile links | — | ⬜ todo |
 
@@ -96,12 +96,29 @@ today. To use real photos, set a background image on `.venture__bg`, e.g.:
 
 ## Activating Google AdSense
 
-1. Get approved at <https://www.google.com/adsense> with the live domain.
-2. In `index.html` `<head>`, uncomment the AdSense `<script>` and add your `ca-pub-…` ID.
-3. For each `<!-- AD SLOT: … -->` block, uncomment the `<ins class="adsbygoogle">`
-   tag and add your `data-ad-client` and `data-ad-slot` IDs.
-4. The placeholder boxes you see now are just visual stand-ins — they disappear
-   once real ad units render.
+The AdSense loader script (`ca-pub-6512943011057060`) is already live in the
+`<head>` of every page, and `ads.txt` at the site root authorises Google as a
+seller for that publisher ID — both required before AdSense will serve ads on
+this domain.
+
+1. Get approved at <https://www.google.com/adsense> with the live domain (if
+   not already approved).
+2. For each `<!-- AD SLOT: … -->` block, uncomment the `<ins class="adsbygoogle">`
+   tag and replace `data-ad-slot="0000000000"` with the real slot ID from a
+   matching ad unit you create in the AdSense dashboard.
+3. The placeholder boxes you see now are just visual stand-ins — they disappear
+   once real ad units render. Until slots are configured, AdSense's Auto ads
+   (enabled from the AdSense dashboard) can still serve ads using just the
+   loader script.
+4. In AdSense → **Privacy & messaging**, turn on a consent message for
+   EEA/UK/Switzerland traffic. The site already sends Google's Consent Mode
+   default (`denied`) via `assets/js/consent.js` and a cookie banner that
+   updates consent to `granted`/`denied` based on the visitor's choice — the
+   dashboard message and this code-side signal work together, so an AdSense
+   Privacy & messaging message should still be configured for full compliance.
+5. Compliance pages are live at `/privacy.html` and `/terms.html` (linked from
+   every footer) — update the contact details or add a company entity/ABN if
+   that changes.
 
 ---
 
