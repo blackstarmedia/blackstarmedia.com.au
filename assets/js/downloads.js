@@ -177,33 +177,13 @@
       });
   }
 
-  // ── Placeholder cards (shown before Drive is configured) ─────────────────
+  // ── Placeholder state (shown before Drive is configured) ─────────────────
+  // Renders nothing rather than fake "coming soon" cards, so the Downloads
+  // section never shows non-functional stub content — only the real,
+  // always-available featured PDF below stays visible until Drive is wired up.
   function renderPlaceholders() {
-    var items = [
-      "AI Tools Quickstart Guide",
-      "Prompt Engineering Cheatsheet",
-      "AI:M Workshop Workbook",
-    ];
+    grid.hidden = true;
     grid.innerHTML = "";
-    items.forEach(function (title, i) {
-      var card = document.createElement("article");
-      card.className = "dl-card dl-card--placeholder reveal";
-      card.setAttribute("data-delay", String(i + 1));
-      card.innerHTML =
-        '<div class="dl-card__icon" aria-hidden="true">' +
-          '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
-            '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
-            '<polyline points="14 2 14 8 20 8"/>' +
-          "</svg>" +
-        "</div>" +
-        '<div class="dl-card__body">' +
-          '<h3 class="dl-card__title">' + esc(title) + "</h3>" +
-          '<span class="dl-card__yt muted">Coming soon</span>' +
-        "</div>" +
-        '<span class="btn btn--ghost dl-card__dl" aria-disabled="true">Coming Soon</span>';
-      grid.appendChild(card);
-    });
-    observeReveals(grid);
   }
 
   // ── Fetch file list from Drive API ───────────────────────────────────────

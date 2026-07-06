@@ -194,4 +194,24 @@
   /* ---------- 7. Footer year (auto) ------------------------------------ */
   // (kept static "2026" in markup; uncomment to auto-update)
   // var y = document.querySelector("[data-year]"); if (y) y.textContent = new Date().getFullYear();
+
+  /* ---------- 8. Contact form fallback ----------------------------------
+     Until a real Formspree endpoint is configured (see README), posting to
+     the placeholder action would fail silently. Detect that case and fall
+     back to a pre-filled mailto: so the form still works for visitors. */
+  var contactForm = document.querySelector('form[action*="formspree.io/f/YOUR_FORM_ID"]');
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = contactForm.name.value.trim();
+      var email = contactForm.email.value.trim();
+      var subject = contactForm.subject ? contactForm.subject.value : "General";
+      var message = contactForm.message.value.trim();
+      var body = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
+      window.location.href =
+        "mailto:contact@blackstarmedia.com.au" +
+        "?subject=" + encodeURIComponent("[Website] " + subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  }
 })();

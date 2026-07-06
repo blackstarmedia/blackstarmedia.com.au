@@ -74,10 +74,12 @@ Search the codebase for these tokens and replace them:
 | Spotify artist `6v0R5eHKsjwcvml4rpPpng` | Tha MEGA BOY BAND | Spotify | ✅ wired |
 | AI MEGA VAULT video `Kl5MOpvXuD8` + `@AiMegaVault` | Featured video / channel | YouTube | ✅ wired |
 | NeoSoul Music video `Dv8crFNMlBo` + `@NeoSoulMusic26` | Featured video / channel | YouTube | ✅ wired |
-| `ca-pub-XXXXXXXXXXXXXXXX` | AdSense publisher ID | Google AdSense | ⬜ todo |
+| `ca-pub-6512943011057060` | AdSense publisher ID | Google AdSense | ✅ wired |
 | `data-ad-slot="0000000000"` | AdSense slot IDs | Google AdSense | ⬜ todo |
-| `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo |
-| Instagram / TikTok / Facebook URLs (footer) | Real profile links | — | ⬜ todo |
+| `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo — degrades to a pre-filled `mailto:` until set |
+| Instagram / Facebook URLs (footer) | Real profile links, or omit | — | ⬜ todo — removed from footer until real links exist |
+| `privacy.html` / `terms.html` | — | — | ✅ added — linked from every page footer |
+| `ads.txt` | — | — | ✅ added with the live publisher ID |
 
 **Swapping the featured AI MEGA VAULT video:** in `index.html`, change the
 `data-yt="…"` value and the `hqdefault.jpg` thumbnail URL in the same block to
