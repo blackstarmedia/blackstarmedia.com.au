@@ -77,7 +77,11 @@ Search the codebase for these tokens and replace them:
 | AdSense publisher ID | `ca-pub-6512943011057060` | Google AdSense | ✅ wired |
 | `data-ad-slot="0000000000"` | Real AdSense slot IDs (once you create ad units) | Google AdSense | ⬜ todo |
 | `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo |
-| Instagram / TikTok / Facebook URLs (footer) | Real profile links | — | ⬜ todo |
+| TikTok URL (footer) | Real profile link | — | ✅ wired |
+
+> Instagram and Facebook icons were removed from the footer (they pointed to
+> the generic homepages, not a real Black Star Media profile — a dead-link
+> risk for AdSense review). Add them back once real profile URLs exist.
 
 **Swapping the featured AI MEGA VAULT video:** in `index.html`, change the
 `data-yt="…"` value and the `hqdefault.jpg` thumbnail URL in the same block to
