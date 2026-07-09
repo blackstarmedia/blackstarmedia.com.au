@@ -320,6 +320,7 @@ body.menu-open .mobile-menu a:nth-child(7) { transition-delay: .44s; }
   transition: transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
 }
 .card:hover { transform: translateY(-4px); border-color: var(--color-line-strong); box-shadow: 0 18px 44px rgba(0,0,0,0.4); }
+.card .section-icon { margin-bottom: 0.8rem; }
 .card__num { font-family: var(--font-mono); color: var(--color-gold); font-size: 0.8rem; letter-spacing: 0.1em; }
 .card__title { font-family: var(--font-display); font-size: 1.35rem; margin: 0.6rem 0 0.5rem; }
 .card__body { color: rgba(255,255,255,0.7); font-size: 0.98rem; }
