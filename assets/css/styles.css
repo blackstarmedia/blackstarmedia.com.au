@@ -742,6 +742,7 @@ body.menu-open .mobile-menu a:nth-child(7) { transition-delay: .44s; }
 .journal-entry__byline::before { content: "\2014 "; opacity: 0.5; }
 .journal-entry__cover { width: 100%; aspect-ratio: 2 / 1; border-radius: var(--radius); overflow: hidden; margin-bottom: 1.6rem; border: 1px solid var(--color-line); background: var(--color-surface-2); }
 .journal-entry__cover svg { display: block; width: 100%; height: 100%; }
+.journal-entry__cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
 .journal-entry__title { font-family: var(--font-display); font-size: clamp(1.3rem, 1.1rem + 1vw, 1.8rem); line-height: 1.2; margin-bottom: 1.1rem; }
 .journal-entry p { color: rgba(255,255,255,0.78); line-height: 1.7; margin-top: 0.9rem; }
 .journal-entry p:first-of-type { margin-top: 0; }
