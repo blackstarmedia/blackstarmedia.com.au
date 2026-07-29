@@ -428,7 +428,202 @@
           <p class="section-sub lead">Every Black Star release runs the same path &mdash; think, write, generate, assemble, publish, monetise. Tap a stage to open it, tap a tool to read what it&rsquo;s for, then expand for the exact steps.</p>
         </div>
 
-        <div class="pl-wrap" id="processApp"></div>
+        <div class="pl-wrap" id="processApp">
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">01 / IDEATION</span>
+        <span class="pl-stage-title">Ideas & Concepts</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">Where it begins. Use conversational AI to find angles, test premises, and shape a concept before a single asset is made.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-3 11v2h6v-2a6 6 0 0 0-3-11z"/><path d="M10 20h4"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">ChatGPT</span><span class="pl-sub-tools">brainstorm · expand</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Fast, broad ideation. Great for riffing on lots of directions and stress-testing a hook quickly.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Dump a rough topic and ask for 20 angles</li><li>Pressure-test the hook against the audience</li><li>Cluster the best ideas into a series</li><li>Pick a working title and one-line premise</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Gemini</span><span class="pl-sub-tools">research · grounding</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Strong for fact-anchored concepts and pulling in current context to ground an idea in what is real.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Validate the idea against current trends</li><li>Pull supporting facts, stats, and references</li><li>Check what competitors already covered</li><li>Find a fresh angle the topic is missing</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Claude</span><span class="pl-sub-tools">structure · nuance</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Best for long-form thinking and refining a concept into a clear, well-reasoned outline.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Turn the raw idea into a structured outline</li><li>Define the narrative arc start to finish</li><li>Flag weak points and logical gaps</li><li>Lock the final concept brief</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">02 / DIRECTION</span>
+        <span class="pl-stage-title">Prompt</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">The concept becomes instruction. Write the prompts that tell every downstream tool exactly what to make.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-3 11v2h6v-2a6 6 0 0 0-3-11z"/><path d="M10 20h4"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">ChatGPT</span><span class="pl-sub-tools">drafting · variations</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Quickly spin up prompt variants and iterate on wording to dial in tone and detail.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Draft the first prompt from the brief</li><li>Generate 3–5 wording variations</li><li>A/B the variants, keep the strongest</li><li>Note what phrasing moved the output</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Gemini</span><span class="pl-sub-tools">multimodal cues</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Useful when a prompt needs to reference images or live data to steer the output.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Attach reference images or links</li><li>Describe the visual style concretely</li><li>Pull live data the prompt should reflect</li><li>Merge text and image direction</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Claude</span><span class="pl-sub-tools">precision · system prompts</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Excels at detailed, rule-heavy prompts and reusable templates that keep output consistent.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Write a constraint-led master prompt</li><li>Build a reusable template for the series</li><li>Add guardrails to stay on-brand</li><li>Document the prompt for reuse</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">03 / PRODUCTION</span>
+        <span class="pl-stage-title">Content Generators</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">Prompts become raw media. Generate the sound, motion, and imagery that make up the piece.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M3 12h2l2-6 3 12 3-9 2 5h6"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Audio</span><span class="pl-sub-tools">Suno · ElevenLabs</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Suno writes full tracks from a prompt; ElevenLabs voices narration and dialogue. Music and voice, covered.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Generate a track or full song in Suno</li><li>Render voiceover in ElevenLabs</li><li>Pick a consistent voice for the series</li><li>Export clean stems for editing</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Video</span><span class="pl-sub-tools">Kling · OpenArt · Flow</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Text-to-video and image-to-video clips. Generate motion, scenes, and animated sequences from a description.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Generate scene clips from prompts</li><li>Use image-to-video for controlled shots</li><li>Create B-roll and transitions</li><li>Export clips at target resolution</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Image</span><span class="pl-sub-tools">ChatGPT · Gemini</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Generate thumbnails, stills, and visual assets on demand for covers and in-video graphics.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Generate thumbnail options</li><li>Create stills and overlay graphics</li><li>Make cover art for audio releases</li><li>Upscale and tidy chosen assets</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">04 / ASSEMBLY</span>
+        <span class="pl-stage-title">Content Compilation</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">Scattered assets become one finished cut. Edit, sync, and arrange everything into the final piece.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M4 7l16 0M4 12l16 0M4 17l10 0"/><circle cx="18" cy="17" r="2.4"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">CapCut</span><span class="pl-sub-tools">edit · sync · export</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">The assembly bench. Cut clips, layer audio, add captions and effects, then export ready-to-post versions for each platform.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Lay clips and audio on the timeline</li><li>Sync cuts to beat and voiceover</li><li>Add captions, titles, and effects</li><li>Export tailored versions per platform</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">05 / DISTRIBUTION</span>
+        <span class="pl-stage-title">Platforms</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">The finished cut goes live. Publish to where the audience already is — and tailor the format to each.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">YouTube</span><span class="pl-sub-tools">long-form · home base</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">The anchor channel for full-length content, searchable library, and the main monetisation engine.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Upload the long-form master cut</li><li>Write SEO title, description, tags</li><li>Set thumbnail and end screens</li><li>Schedule the publish slot</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M9 3v12.5a3.5 3.5 0 1 1-3-3.46"/><path d="M9 3c1 2.5 3 4 6 4"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">TikTok</span><span class="pl-sub-tools">short · discovery</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Vertical short-form built for reach. Best for hooks, trends, and pulling new viewers into the funnel.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Cut a vertical short from the master</li><li>Hook hard in the first 2 seconds</li><li>Add trending audio and on-screen text</li><li>Post at peak time with hashtags</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Instagram</span><span class="pl-sub-tools">reels · community</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Reels and posts for audience-building and brand presence, with strong cross-promotion back to YouTube.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Repurpose the short as a Reel</li><li>Add a cover frame and caption</li><li>Cross-link to the YouTube upload</li><li>Reply to comments to build community</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+    <section class="pl-stage">
+      <button class="pl-stage-btn" aria-expanded="false">
+        <span class="pl-stage-num">06 / RETURN</span>
+        <span class="pl-stage-title">Monetisation</span>
+        <span class="pl-toggle"></span>
+      </button>
+      <div class="pl-panel"><div class="pl-panel-inner">
+        <p class="pl-stage-desc">The work pays back. Turn views, listens, and skills into multiple income streams.</p>
+        
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a1.8 1.8 0 0 1 0 3.6h-3a1.8 1.8 0 0 0 0 3.6h4"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Ads</span><span class="pl-sub-tools">AdSense · YouTube · Google Ads</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Revenue from views via the YouTube Partner Programme and AdSense, scaled by paid promotion when it pays for itself.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Hit the Partner Programme thresholds</li><li>Enable monetisation and ad placements</li><li>Link AdSense for payout</li><li>Reinvest in Google Ads where ROI is positive</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M7.5 10c3-1 6-.5 8.5 1M8 13c2.2-.7 4.5-.4 6.3.9"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Spotify</span><span class="pl-sub-tools">streaming royalties</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Distribute generated music for per-stream royalties and a catalogue that earns passively over time.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Distribute tracks via an aggregator</li><li>Build a release and playlist plan</li><li>Grow a catalogue that earns passively</li><li>Track per-stream royalties over time</li></ul></div></div></div>
+      </div>
+      <div class="pl-sub" data-open="false">
+        <button class="pl-sub-btn" aria-expanded="false">
+          <span class="pl-glyph"><svg viewBox="0 0 24 24"><path d="M3 7h18v11H3z"/><path d="M8 7V5h8v2M3 12h18"/></svg></span>
+          <span class="pl-sub-meta"><span class="pl-sub-label">Workshops</span><span class="pl-sub-tools">teach · high-margin</span></span>
+          <span class="pl-chev"></span>
+        </button>
+        <div class="pl-panel"><div class="pl-sub-body"><p class="pl-sub-note">Package the whole pipeline as a paid skill — the highest-margin stream, selling the know-how itself.</p><button class="pl-tasks-btn" aria-expanded="false"><span class="pl-plus">+</span> Detailed tasks</button><div class="pl-panel"><ul class="pl-tasks"><li>Package the pipeline into a course</li><li>Set pricing and session format</li><li>Promote to the existing audience</li><li>Deliver live and collect testimonials</li></ul></div></div></div>
+      </div>
+      </div></div>
+    </section>
+        </div>
 
         <p class="center muted reveal" data-delay="1" style="margin-top:2rem;font-size:0.92rem;">
           Want the full picture, including the live projects proving it works? <a class="gold" href="pipeline.html">See the complete pipeline &rarr;</a>
