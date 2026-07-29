@@ -26,19 +26,26 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 
 ```
 .
-├── index.html            # Home — all sections incl. #downloads + admin modal
+├── index.html            # Home — all sections
 ├── profile.html          # Company profile page
+├── pipeline.html         # The Pipeline — six-stage production process page
+├── journal.html          # Journal — Suno/AI music commentary
+├── suno-poster.html      # Email-gated PDF landing page
+├── privacy.html          # Privacy Policy
+├── terms.html            # Terms of Use
 ├── CNAME                 # Custom domain for GitHub Pages
 ├── .nojekyll             # Tell GitHub Pages to serve files as-is (no Jekyll)
 ├── robots.txt
 ├── sitemap.xml
 ├── scripts/
-│   ├── update_latest_videos.py # Refresh latest-videos.json (GitHub Action)
-│   └── email-delivery.gs       # Apps Script web app: email capture + delivery
+│   ├── update_latest_videos.py   # Refresh latest-videos.json (GitHub Action)
+│   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
+│   └── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
 │   ├── js/main.js        # Nav, reveals, starfield, lazy embeds
-│   ├── js/downloads.js   # Downloads section: Drive listing + email gate + admin upload
+│   ├── js/process.js     # Homepage "How We Work" accordion interaction
+│   ├── js/consent.js     # Cookie consent banner + Google Consent Mode
 │   ├── data/
 │   │   └── latest-videos.json   # Newest YouTube upload per channel
 │   └── img/
@@ -76,8 +83,11 @@ Search the codebase for these tokens and replace them:
 | NeoSoul Music video `Dv8crFNMlBo` + `@NeoSoulMusic26` | Featured video / channel | YouTube | ✅ wired |
 | AdSense publisher ID | `ca-pub-6512943011057060` | Google AdSense | ✅ wired |
 | `data-ad-slot="0000000000"` | Real AdSense slot IDs (once you create ad units) | Google AdSense | ⬜ todo |
-| `YOUR_FORM_ID` (contact form `action`) | Formspree form ID | <https://formspree.io> | ⬜ todo |
 | TikTok URL (footer) | Real profile link | — | ✅ wired |
+
+> The homepage contact form was replaced with a direct `mailto:` link — the
+> Formspree form and its `YOUR_FORM_ID` placeholder were removed rather than
+> configured, since a working mailto CTA is simpler and Formspree wasn't set up.
 
 > Instagram and Facebook icons were removed from the footer (they pointed to
 > the generic homepages, not a real Black Star Media profile — a dead-link
@@ -126,48 +136,28 @@ this domain.
 
 ---
 
-## Downloads section (Drive listing + email gate + admin upload)
+## Downloads (email-gated PDF via suno-poster.html)
 
-The homepage `#downloads` section lists PDF resources straight from a Google
-Drive folder. Each card shows an **email opt-in form** — the visitor enters
-their email, the address is saved to your list, and an automated thank-you email
-delivers the download link. There's also a hidden **admin panel** to upload new
-PDFs to Drive from the browser.
-
-**How it fits together (no backend — static site + Google):**
+The homepage `#downloads` section is a static featured-resource card linking
+to [`suno-poster.html`](suno-poster.html), a dedicated landing page with its
+own email-capture form. The visitor enters their email, the address is logged
+to a Google Sheet, and an automated email delivers the PDF link — no backend,
+just a static page + a Google Apps Script.
 
 | Piece | Role |
 |---|---|
-| `assets/js/downloads.js` | Lists PDFs from the Drive folder (Drive API), renders cards with the email form, runs the admin upload modal. |
-| Google Drive folder | Holds the PDFs (shared "Anyone with link → Viewer"). |
-| `scripts/email-delivery.gs` | Apps Script web app: validates the file is in your folder, logs the email to a Google Sheet, emails the download link. |
-| Google Sheet | "Black Star — Download Signups" — your email database (auto-created on first signup). |
+| `suno-poster.html` inline script | Renders the capture form and posts the email to the Apps Script endpoint. |
+| `scripts/suno-poster-delivery.gs` | Apps Script web app: logs the email to a Google Sheet and sends the delivery email. |
+| Google Sheet | Email database (auto-created on first signup). |
 
-**Setup — two parts:**
+Degrades gracefully: if the Apps Script endpoint isn't configured, the form
+shows the download button immediately instead of gating it.
 
-1. **Listing + admin upload** — follow the header comment in
-   [`assets/js/downloads.js`](assets/js/downloads.js): create a Google Cloud
-   project, enable the Drive API, make an API key + OAuth client ID, create the
-   Drive folder (share "Anyone with link → Viewer"), and fill in
-   `DRIVE_API_KEY`, `DRIVE_CLIENT_ID`, `DRIVE_FOLDER_ID`.
-2. **Email gate** — follow the header in
-   [`scripts/email-delivery.gs`](scripts/email-delivery.gs): paste it into a new
-   Apps Script project, set `DOWNLOADS_FOLDER_ID` to the **same** folder id,
-   deploy as a Web app ("Execute as: Me", "Who has access: Anyone"), and put the
-   `/exec` URL into `downloads.js` → `EMAIL_ENDPOINT`.
-
-**Adding a resource:** open the admin panel (**Shift + Alt + A**), sign in, and
-upload the PDF — it appears in the section automatically and is immediately
-deliverable (no per-file config; the script accepts any PDF in the folder).
-
-Degrades gracefully: before keys are set it shows placeholder "coming soon"
-cards; if `EMAIL_ENDPOINT` is unset it shows a direct download link instead of
-the form.
-
-> **Gate strength:** because the folder is listed client-side, file ids are
-> visible in the page, so a technical user could derive a direct Drive link —
-> the gate captures ~all normal visitors but isn't airtight. For a strict gate,
-> switch to server-side listing (Apps Script `doGet`) with a private folder.
+> The earlier Google Drive-backed multi-resource listing (`assets/js/downloads.js`,
+> with an admin upload panel) was removed — it was never fully configured and
+> sat unused, showing placeholder "coming soon" cards. `scripts/email-delivery.gs`
+> was written for that flow; it's no longer wired to any page but is kept as a
+> reference if the Drive-listing approach comes back.
 
 > **Compliance (AU Spam Act 2003):** the form requires a consent checkbox, and
 > the delivery email identifies the sender and includes an unsubscribe line. For
