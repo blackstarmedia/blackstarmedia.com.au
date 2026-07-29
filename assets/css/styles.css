@@ -738,6 +738,8 @@ body.menu-open .mobile-menu a:nth-child(7) { transition-delay: .44s; }
 .journal-entry__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; margin-bottom: 0.9rem; }
 .journal-entry__tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-gold); }
 .journal-entry__date { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--color-muted); }
+.journal-entry__byline { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--color-muted); }
+.journal-entry__byline::before { content: "\2014 "; opacity: 0.5; }
 .journal-entry__title { font-family: var(--font-display); font-size: clamp(1.3rem, 1.1rem + 1vw, 1.8rem); line-height: 1.2; margin-bottom: 1.1rem; }
 .journal-entry p { color: rgba(255,255,255,0.78); line-height: 1.7; margin-top: 0.9rem; }
 .journal-entry p:first-of-type { margin-top: 0; }
