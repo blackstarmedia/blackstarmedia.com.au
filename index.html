@@ -815,13 +815,31 @@
           <p class="section-sub lead">Music, workshops or media — tell us what you have in mind. We typically respond within 1&ndash;2 business days.</p>
         </div>
 
-        <div class="center reveal" data-delay="1">
-          <a class="btn btn--gold" href="mailto:louis@blackstarmedia.com.au">Email the Studio &rarr;</a>
-        </div>
-
-        <p class="center muted" style="margin-top:1.5rem;font-size:0.9rem;">
-          <a class="gold" href="mailto:louis@blackstarmedia.com.au">louis@blackstarmedia.com.au</a>
-        </p>
+        <form class="form reveal" data-delay="1" action="https://formspree.io/f/xjybyebz" method="POST">
+          <div class="field">
+            <label for="contact-name">Name</label>
+            <input id="contact-name" type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" type="email" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="field">
+            <label for="contact-subject">Subject</label>
+            <select id="contact-subject" name="subject">
+              <option value="">Select a topic&hellip;</option>
+              <option value="Music">Music</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Media / Press">Media / Press</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" placeholder="Tell us what you have in mind&hellip;" required></textarea>
+          </div>
+          <button class="btn btn--gold" type="submit">Send Message &rarr;</button>
+        </form>
       </div>
     </section>
 
