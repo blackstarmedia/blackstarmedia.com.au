@@ -39,6 +39,8 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 ├── sitemap.xml
 ├── scripts/
 │   ├── update_latest_videos.py   # Refresh latest-videos.json (GitHub Action)
+│   ├── transcribe_audio.py       # Transcribe + timestamp an audio script (local CLI)
+│   ├── requirements-transcribe.txt  # pip deps for transcribe_audio.py
 │   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
 │   └── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
 ├── assets/
@@ -163,6 +165,28 @@ shows the download button immediately instead of gating it.
 > the delivery email identifies the sender and includes an unsubscribe line. For
 > large-scale bulk campaigns later, export the Sheet into a dedicated email tool
 > (MailerLite, Brevo, etc.) that handles unsubscribe + deliverability at scale.
+
+---
+
+## Transcribing audio scripts (`scripts/transcribe_audio.py`)
+
+A local CLI (not a GitHub Action — run it on your Mac) that sends an audio
+file to the OpenAI Whisper API and writes back a timestamped script:
+
+```bash
+pip install -r scripts/requirements-transcribe.txt
+export OPENAI_API_KEY=sk-...
+python3 scripts/transcribe_audio.py voiceover.mp3
+```
+
+By default it prints one `[MM:SS] line` per segment — the same bracketed
+timestamp format the video/content pipeline expects as script input. Pass
+`--format srt` or `--format vtt` for captions, `--format txt` for a plain
+transcript, or `--format json` for raw segment data; `--out FILE` writes to
+a file instead of stdout. `--language` and `--prompt` can hint the model
+with an ISO-639-1 code or context (names, jargon) for better accuracy. The
+Whisper API caps uploads at 25MB — compress or split longer recordings
+first.
 
 ---
 
