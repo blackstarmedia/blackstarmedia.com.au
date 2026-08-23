@@ -40,7 +40,8 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 ├── scripts/
 │   ├── update_latest_videos.py   # Refresh latest-videos.json (GitHub Action)
 │   ├── transcribe_audio.py       # Transcribe + timestamp an audio script (local CLI)
-│   ├── requirements-transcribe.txt  # pip deps for transcribe_audio.py
+│   ├── content_pipeline.py       # Stage 1 of the automated content pipeline (see below)
+│   ├── requirements-transcribe.txt  # pip deps for transcribe_audio.py / content_pipeline.py
 │   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
 │   └── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
 ├── assets/
@@ -187,6 +188,31 @@ a file instead of stdout. `--language` and `--prompt` can hint the model
 with an ISO-639-1 code or context (names, jargon) for better accuracy. The
 Whisper API caps uploads at 25MB — compress or split longer recordings
 first.
+
+---
+
+## Automated content pipeline (raw audio → storyboard frames → edited video)
+
+Three stages turn a voiceover recording into a fully edited video. The first
+is a plain local script; the other two are Claude Code skills, because they
+need judgement (what idea does this line illustrate?) and tool connections
+(OpenArt, Descript) that don't belong in a portable script.
+
+| Stage | What runs it | What it does |
+|---|---|---|
+| 1. Transcribe | `scripts/content_pipeline.py` (local CLI) | Audio → `output/<name>/script.txt`, a timestamped script |
+| 2. Storyboard frames | `openart-script-frames` skill | `script.txt` → `output/<name>/frames/`, one image per timestamp |
+| 3. Final cut | `video-editor-pipeline` skill | Audio + script + frames → edited video (captions, B-roll, music) |
+
+```bash
+pip install -r scripts/requirements-transcribe.txt
+export OPENAI_API_KEY=sk-...
+python3 scripts/content_pipeline.py voiceover.mp3 --name my-video
+```
+
+That writes `output/my-video/script.txt` and prints the two follow-up skill
+invocations to run in a Claude Code session. `output/` is gitignored — it's
+per-run scratch content, not part of the site.
 
 ---
 

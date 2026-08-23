@@ -43,6 +43,20 @@ def fmt_vtt_ts(seconds):
     return f"{h:02d}:{m:02d}:{s:02d}.{msec:03d}"
 
 
+def validate_audio_source(audio_path):
+    """Raise SystemExit with a clear message if audio_path or the API key isn't usable."""
+    if not os.path.isfile(audio_path):
+        raise SystemExit(f"No such file: {audio_path}")
+    size = os.path.getsize(audio_path)
+    if size > MAX_UPLOAD_BYTES:
+        raise SystemExit(
+            f"{audio_path} is {size / 1024 / 1024:.1f}MB, over the Whisper API's 25MB limit. "
+            "Compress it or split it into smaller chunks first."
+        )
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("Set OPENAI_API_KEY before running this script.")
+
+
 def transcribe(audio_path, model, language, prompt):
     from openai import OpenAI
 
@@ -98,17 +112,7 @@ def main():
     parser.add_argument("--prompt", help="Optional context to prime the transcription (names, jargon, style)")
     args = parser.parse_args()
 
-    if not os.path.isfile(args.audio):
-        raise SystemExit(f"No such file: {args.audio}")
-    size = os.path.getsize(args.audio)
-    if size > MAX_UPLOAD_BYTES:
-        raise SystemExit(
-            f"{args.audio} is {size / 1024 / 1024:.1f}MB, over the Whisper API's 25MB limit. "
-            "Compress it or split it into smaller chunks first."
-        )
-    if not os.environ.get("OPENAI_API_KEY"):
-        raise SystemExit("Set OPENAI_API_KEY before running this script.")
-
+    validate_audio_source(args.audio)
     segments = transcribe(args.audio, args.model, args.language, args.prompt)
     output = render(segments, args.format)
 
