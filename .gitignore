@@ -13,3 +13,7 @@
 
 # Local previews / temp
 *.tmp
+
+# Content pipeline run output (scripts/content_pipeline.py)
+/output/
+__pycache__/
