@@ -2,6 +2,8 @@
 
 Base designs are locked from the 4 supplied Grok reference sketches (clean lineart, front-facing full body). Each character keeps that silhouette/proportions/face but gets a fixed color palette for the finished animated look. Every OpenArt generation for a character starts from that character's **reference sheet image** (generated once, then reused as the image2image anchor for every subsequent shot) to keep them consistent episode to episode.
 
+**Generated reference sheets are live in OpenArt** (project `Sharehouse.AI`, model `nano-banana-pro`) — see `episode-01-the-algorithm-made-me-do-it/generated-assets.md` for the hosted URLs to reuse as `visualReferences` in every future shot/episode.
+
 ---
 
 ## KAI NGUYEN-WALSH, 22 — "The Gamer"
