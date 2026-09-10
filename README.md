@@ -88,9 +88,9 @@ Search the codebase for these tokens and replace them:
 | `data-ad-slot="0000000000"` | Real AdSense slot IDs (once you create ad units) | Google AdSense | ⬜ todo |
 | TikTok URL (footer) | Real profile link | — | ✅ wired |
 
-> The homepage contact form was replaced with a direct `mailto:` link — the
-> Formspree form and its `YOUR_FORM_ID` placeholder were removed rather than
-> configured, since a working mailto CTA is simpler and Formspree wasn't set up.
+> The homepage contact form is wired to a real Formspree endpoint
+> (`https://formspree.io/f/xjybyebz`) — submissions land in the connected
+> Formspree account. No further setup needed unless the form ID changes.
 
 > Instagram and Facebook icons were removed from the footer (they pointed to
 > the generic homepages, not a real Black Star Media profile — a dead-link
