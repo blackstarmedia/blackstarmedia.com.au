@@ -45,6 +45,9 @@
 
 var CONFIG = {
   ROOT_FOLDER_ID: "18V0NO9Me4r8NFBcfgkihZS91B6iofCcu",
+  // Private Drive JSON {"Name": [photoId, ...]} produced by the face-grouping step.
+  // Lives OUTSIDE the shared gallery folder so only the owner can read it.
+  PLAYERS_FILE_ID: "1joztDO5M-pnl6Q8DoJSoc-MoFc7CHKL7",
   PASSWORD: "", // set in your Apps Script copy only — do NOT commit the real value
   LOOSE_ALBUM_TITLE: "More photos",
   CACHE_SECONDS: 300 // listing is cached for 5 min to keep the page fast
@@ -139,15 +142,32 @@ function buildAlbum_(folder) {
   };
 }
 
+// photoId -> ["Name", ...]; empty map if the tags file is missing/unreadable.
+var PLAYER_INDEX_ = null;
+function playerIndex_() {
+  if (PLAYER_INDEX_) return PLAYER_INDEX_;
+  PLAYER_INDEX_ = {};
+  if (!CONFIG.PLAYERS_FILE_ID) return PLAYER_INDEX_;
+  try {
+    var tags = JSON.parse(DriveApp.getFileById(CONFIG.PLAYERS_FILE_ID).getBlob().getDataAsString());
+    Object.keys(tags).forEach(function (name) {
+      tags[name].forEach(function (id) { (PLAYER_INDEX_[id] = PLAYER_INDEX_[id] || []).push(name); });
+    });
+  } catch (err) { console.error("player tags unreadable", err); }
+  return PLAYER_INDEX_;
+}
+
 function listMedia_(folder) {
-  var items = [];
+  var items = [], tags = playerIndex_();
   var files = folder.getFiles();
   while (files.hasNext()) {
     var f = files.next();
     var mime = f.getMimeType() || "";
     var type = mime.indexOf("image/") === 0 ? "image" : mime.indexOf("video/") === 0 ? "video" : "";
     if (!type) continue;
-    items.push({ id: f.getId(), type: type, name: f.getName() });
+    var item = { id: f.getId(), type: type, name: f.getName() };
+    if (tags[item.id]) item.players = tags[item.id];
+    items.push(item);
   }
   // Camera file names (IMG_0001…) sort into shooting order.
   items.sort(function (a, b) {
