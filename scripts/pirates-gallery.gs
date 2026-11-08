@@ -47,7 +47,9 @@ var CONFIG = {
   ROOT_FOLDER_ID: "18V0NO9Me4r8NFBcfgkihZS91B6iofCcu",
   // Private Drive JSON {"Name": [photoId, ...]} produced by the face-grouping step.
   // Lives OUTSIDE the shared gallery folder so only the owner can read it.
-  PLAYERS_FILE_ID: "1joztDO5M-pnl6Q8DoJSoc-MoFc7CHKL7",
+  // Looked up by name (newest non-trashed copy wins), so re-running the tagging
+  // only needs a new file with this name — no script redeploy.
+  PLAYERS_FILE_NAME: "Pirates gallery - player tags (private).json",
   PASSWORD: "", // set in your Apps Script copy only — do NOT commit the real value
   LOOSE_ALBUM_TITLE: "More photos",
   CACHE_SECONDS: 300 // listing is cached for 5 min to keep the page fast
@@ -147,9 +149,16 @@ var PLAYER_INDEX_ = null;
 function playerIndex_() {
   if (PLAYER_INDEX_) return PLAYER_INDEX_;
   PLAYER_INDEX_ = {};
-  if (!CONFIG.PLAYERS_FILE_ID) return PLAYER_INDEX_;
+  if (!CONFIG.PLAYERS_FILE_NAME) return PLAYER_INDEX_;
   try {
-    var tags = JSON.parse(DriveApp.getFileById(CONFIG.PLAYERS_FILE_ID).getBlob().getDataAsString());
+    var it = DriveApp.getFilesByName(CONFIG.PLAYERS_FILE_NAME), file = null;
+    while (it.hasNext()) {
+      var f = it.next();
+      if (f.isTrashed()) continue;
+      if (!file || f.getLastUpdated() > file.getLastUpdated()) file = f;
+    }
+    if (!file) return PLAYER_INDEX_;
+    var tags = JSON.parse(file.getBlob().getDataAsString());
     Object.keys(tags).forEach(function (name) {
       tags[name].forEach(function (id) { (PLAYER_INDEX_[id] = PLAYER_INDEX_[id] || []).push(name); });
     });
