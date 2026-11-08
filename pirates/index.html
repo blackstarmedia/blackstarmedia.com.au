@@ -91,6 +91,16 @@
     .section-head h2 { margin: 0; font-family: var(--font-display); text-transform: uppercase; font-size: 1.4rem; letter-spacing: .02em; }
     .section-head .count { color: var(--muted); font-size: .9rem; }
     .albums { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .players-section { margin-bottom: 32px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-weight: 500; font-size: .95rem;
+    }
+    .chip:hover { border-color: var(--team-accent); }
+    .chip img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--surface-2); }
+    .chip .n { color: var(--muted); font-size: .8rem; font-weight: 400; }
+    .lb-names { color: var(--team-accent); font-weight: 700; margin-left: 8px; }
     .card {
       display: block; text-align: left; padding: 0; border: 1px solid var(--line); background: var(--surface);
       border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s;
@@ -197,6 +207,13 @@
 
     <main class="wrap">
       <section id="albums-view">
+        <div class="players-section" id="players-section" hidden>
+          <div class="section-head">
+            <h2>Players</h2>
+            <span class="count">Tap a name to see her photos</span>
+          </div>
+          <div class="chips" id="players"></div>
+        </div>
         <div class="section-head">
           <h2>Games &amp; events</h2>
           <span class="count" id="albums-count"></span>
@@ -347,7 +364,34 @@
       route();
     }
 
+    // Build one virtual album per tagged player, across all games (in game order).
+    function playerAlbums() {
+      var map = {};
+      albums.slice().reverse().forEach(function (a) { // oldest game first
+        a.items.forEach(function (it) {
+          (it.players || []).forEach(function (n) { (map[n] = map[n] || []).push(it); });
+        });
+      });
+      return Object.keys(map).sort().map(function (n) {
+        return { id: "player:" + n, title: n, date: "", url: DRIVE_FOLDER, items: map[n], player: true };
+      });
+    }
+
+    function renderPlayers() {
+      var list = playerAlbums(), wrap = $("players");
+      wrap.innerHTML = "";
+      $("players-section").hidden = !list.length;
+      list.forEach(function (p) {
+        var a = el("a", "chip"); a.href = "#/player/" + encodeURIComponent(p.title);
+        var img = el("img"); img.loading = "lazy"; img.alt = ""; img.src = thumbUrl(p.items[0].id, 200);
+        a.appendChild(img); a.appendChild(el("span", null, p.title));
+        a.appendChild(el("span", "n", String(p.items.length)));
+        wrap.appendChild(a);
+      });
+    }
+
     function renderAlbums() {
+      renderPlayers();
       var wrap = $("albums");
       wrap.innerHTML = "";
       var photos = albums.reduce(function (n, a) { return n + a.items.length; }, 0);
@@ -380,7 +424,7 @@
 
     function renderAlbum(a) {
       current = a;
-      $("album-date").textContent = fmtDate(a.date);
+      $("album-date").textContent = a.player ? a.items.length + " photos · all games" : fmtDate(a.date);
       $("album-title").textContent = a.title;
       $("album-drive").href = a.url || DRIVE_FOLDER;
       var grid = $("grid");
@@ -404,8 +448,9 @@
     // ---------- routing (#/album/<id>) ----------
     function route() {
       if (!albums.length && $("app").hidden) return;
-      var m = location.hash.match(/^#\/album\/(.+)$/);
+      var m = location.hash.match(/^#\/album\/(.+)$/), pm = location.hash.match(/^#\/player\/(.+)$/);
       var a = m && albums.filter(function (x) { return x.id === decodeURIComponent(m[1]); })[0];
+      if (pm) a = playerAlbums().filter(function (x) { return x.title === decodeURIComponent(pm[1]); })[0];
       if (a) {
         renderAlbum(a);
         $("albums-view").hidden = true; $("album-view").hidden = false;
@@ -450,6 +495,7 @@
       lbIndex = i;
       var item = current.items[i];
       $("lb-counter").textContent = (i + 1) + " / " + current.items.length;
+      if (item.players && item.players.length) $("lb-counter").appendChild(el("span", "lb-names", item.players.join(" · ")));
       $("lb-download").href = downloadUrl(item.id);
       hydrate(i);
       // stop videos that scrolled away
