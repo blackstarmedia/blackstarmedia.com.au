@@ -282,13 +282,13 @@
 
     // ---------- unlock ----------
     function fetchAlbums(password) {
-      if (ENDPOINT.indexOf("http") !== 0) return Promise.reject("not_configured");
+      if (ENDPOINT.indexOf("http") !== 0) return Promise.reject("no_endpoint");
       return fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids a CORS preflight
         body: JSON.stringify({ password: password })
       })
-      .then(function (r) { return r.json(); })
+      .then(function (r) { return r.json().catch(function () { throw "bad_response"; }); })
       .then(function (res) {
         if (!res || !res.ok) throw (res && res.error) || "server_error";
         return res.albums || [];
@@ -297,8 +297,10 @@
 
     function errorText(code) {
       if (code === "bad_password") return "That password isn't right — check with the team manager.";
-      if (code === "not_configured") return "The gallery is still being set up. Check back soon.";
-      return "Couldn't reach the gallery. Check your connection and try again.";
+      if (code === "no_endpoint") return "The gallery is still being set up. Check back soon. (code 1)";
+      if (code === "not_configured") return "The gallery password hasn't been set on the server yet. (code 2)";
+      if (code === "bad_response") return "The gallery server didn't respond properly — its access may not be set to \"Anyone\". (code 3)";
+      return "Couldn't reach the gallery. Check your connection and try again. (code 4)";
     }
 
     function unlock(password, remember, silent) {
