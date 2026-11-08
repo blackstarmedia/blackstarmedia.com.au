@@ -225,7 +225,7 @@ Deliberately **not** linked from the site nav or listed in `sitemap.xml`, and ma
 
 | Piece | Role |
 |---|---|
-| `pirates/index.html` | Self-contained page: lock screen, album grid, swipeable photo viewer. Team colours are CSS tokens at the top. |
+| `pirates/index.html` | Self-contained page: lock screen, album grid, swipeable photo viewer. Team colours (purple / gold from the club logo) are CSS tokens at the top; logo is `pirates/logo.png`. |
 | `scripts/pirates-gallery.gs` | Apps Script web app: checks the password (stored in Script properties, not in this repo) and lists the Drive folder. |
 
 **Setup** — follow the header of `scripts/pirates-gallery.gs`, then paste the
