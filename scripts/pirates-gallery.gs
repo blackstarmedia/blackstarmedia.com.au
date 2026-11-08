@@ -18,8 +18,11 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * 1. script.google.com → New project. Paste this whole file in (Code.gs).
  *    Name it "Black Star — Pirates Gallery".
- * 2. Project Settings (gear icon) → Script properties → Add script property:
- *       Property: GALLERY_PASSWORD     Value: <the team password>
+ * 2. Set the password, EITHER:
+ *      a) type it into CONFIG.PASSWORD below (only in your Apps Script copy —
+ *         never commit it to the public repo), OR
+ *      b) Project Settings (gear) → Script properties → GALLERY_PASSWORD.
+ *    A Script property, if present, wins.
  * 3. Deploy → New deployment → type "Web app":
  *       Execute as:     Me (your account)
  *       Who has access: Anyone
@@ -28,7 +31,11 @@
  *       var ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
  *    Replace the placeholder with the URL. Commit and push. Done.
  *
- * Changing the password later: edit the Script property. No redeploy needed.
+ * Check it: open the /exec URL in a browser. You should see
+ *   "service":"pirates-gallery", "passwordSet":true, "folderOk":true
+ *
+ * Changing the password later: edit CONFIG.PASSWORD and deploy a new version
+ * (or edit the Script property — no redeploy needed for that).
  * Editing THIS code later: Deploy → Manage deployments → edit → New version
  * (keeps the same /exec URL).
  *
@@ -38,14 +45,23 @@
 
 var CONFIG = {
   ROOT_FOLDER_ID: "18V0NO9Me4r8NFBcfgkihZS91B6iofCcu",
+  PASSWORD: "", // set in your Apps Script copy only — do NOT commit the real value
   LOOSE_ALBUM_TITLE: "More photos",
   CACHE_SECONDS: 300 // listing is cached for 5 min to keep the page fast
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Health check: open the /exec URL in a browser to see whether setup is complete.
 function doGet() {
-  return json_({ ok: true, service: "pirates-gallery" });
+  var folderOk = false;
+  try { DriveApp.getFolderById(CONFIG.ROOT_FOLDER_ID).getName(); folderOk = true; } catch (_) {}
+  return json_({ ok: true, service: "pirates-gallery", passwordSet: !!getPassword_(), folderOk: folderOk });
+}
+
+function getPassword_() {
+  var prop = PropertiesService.getScriptProperties().getProperty("GALLERY_PASSWORD");
+  return String(prop || CONFIG.PASSWORD || "").trim();
 }
 
 function doPost(e) {
@@ -55,7 +71,7 @@ function doPost(e) {
       try { body = JSON.parse(e.postData.contents); } catch (_) { body = {}; }
     }
 
-    var expected = PropertiesService.getScriptProperties().getProperty("GALLERY_PASSWORD");
+    var expected = getPassword_();
     if (!expected) return json_({ ok: false, error: "not_configured" });
 
     var given = String(body.password || "").trim().toLowerCase();
