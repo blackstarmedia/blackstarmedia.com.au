@@ -43,7 +43,8 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 │   ├── content_pipeline.py       # Stage 1 of the automated content pipeline (see below)
 │   ├── requirements-transcribe.txt  # pip deps for transcribe_audio.py / content_pipeline.py
 │   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
-│   └── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
+│   ├── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
+│   └── pirates-gallery.gs        # Apps Script web app: /pirates/ password check + Drive listing
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
 │   ├── js/main.js        # Nav, reveals, starfield, lazy embeds
@@ -213,6 +214,30 @@ python3 scripts/content_pipeline.py voiceover.mp3 --name my-video
 That writes `output/my-video/script.txt` and prints the two follow-up skill
 invocations to run in a Claude Code session. `output/` is gitignored — it's
 per-run scratch content, not part of the site.
+
+---
+
+## Team gallery (`/pirates/`)
+
+Password-protected photo gallery for the Southwest Metro Pirates (Girls U16 Div 1).
+Deliberately **not** linked from the site nav or listed in `sitemap.xml`, and marked
+`noindex`. No analytics or ads load on it.
+
+| Piece | Role |
+|---|---|
+| `pirates/index.html` | Self-contained page: lock screen, album grid, swipeable photo viewer. Team colours (purple / gold from the club logo) are CSS tokens at the top; logo is `pirates/logo.png`. |
+| `scripts/pirates-gallery.gs` | Apps Script web app: checks the password (stored in Script properties, not in this repo) and lists the Drive folder. |
+
+**Setup** — follow the header of `scripts/pirates-gallery.gs`, then paste the
+`/exec` URL into `ENDPOINT` in `pirates/index.html`.
+
+**Adding photos** — in the team's Drive folder, create one subfolder per game named
+`YYYY-MM-DD Title` (e.g. `2026-11-15 vs Northside Hornets`) and drop photos/videos in.
+They appear on the site within ~5 minutes (or tap **Refresh**). Nothing to commit.
+
+**Privacy notes** — the password stops casual access to the album list; the photos
+themselves are served from Drive as "anyone with the link", so a photo URL that
+gets forwarded stays viewable. Use a less guessable password if that matters.
 
 ---
 
