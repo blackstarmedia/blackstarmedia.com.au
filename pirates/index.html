@@ -137,12 +137,13 @@
     .icon-btn:hover { background: rgba(255,255,255,.16); }
     .icon-btn svg { width: 20px; height: 20px; }
     .lb-track {
-      flex: 1; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
+      flex: 1 1 0; min-height: 0; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
       scrollbar-width: none; overscroll-behavior: contain;
     }
     .lb-track::-webkit-scrollbar { display: none; }
-    .slide { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; display: grid; place-items: center; padding: 8px; min-width: 0; }
-    .slide img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; user-select: none; -webkit-user-drag: none; }
+    .slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; display: flex; align-items: center; justify-content: center; padding: 8px; min-width: 0; }
+    /* Fill the slide box and letterbox inside it, so the whole photo always shows (no cropping). */
+    .slide img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
     .slide iframe { width: min(100%, 1100px); aspect-ratio: 16/9; max-height: 100%; border: 0; border-radius: 8px; background: #000; }
     .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; }
     .lb-prev { left: 12px; } .lb-next { right: 12px; }
