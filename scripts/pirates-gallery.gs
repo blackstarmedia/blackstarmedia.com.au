@@ -51,6 +51,10 @@ var CONFIG = {
   // only needs a new file with this name — no script redeploy.
   PLAYERS_FILE_NAME: "Pirates gallery - player tags (private).json",
   PASSWORD: "", // set in your Apps Script copy only — do NOT commit the real value
+  // Separate password for adding/removing player tags. Set it here in your
+  // Apps Script copy (never commit it) or as Script property TAG_PASSWORD.
+  // Blank = tagging disabled.
+  TAG_PASSWORD: "",
   LOOSE_ALBUM_TITLE: "More photos",
   CACHE_SECONDS: 300 // listing is cached for 5 min to keep the page fast
 };
@@ -85,7 +89,15 @@ function doPost(e) {
       return json_({ ok: false, error: "bad_password" });
     }
 
-    return json_({ ok: true, albums: getAlbums_(), updated: new Date().toISOString() });
+    if (body.action === "checkTagPassword") {
+      return json_(tagAuthError_(body) || { ok: true });
+    }
+    if (body.action === "setTags") {
+      return json_(tagAuthError_(body) || setTags_(String(body.photo || ""), body.players));
+    }
+
+    var albums = getAlbums_();
+    return json_({ ok: true, albums: albums, roster: Object.keys(loadTags_().tags).sort(), updated: new Date().toISOString() });
   } catch (err) {
     console.error(err);
     return json_({ ok: false, error: "server_error" });
@@ -145,25 +157,90 @@ function buildAlbum_(folder) {
 }
 
 // photoId -> ["Name", ...]; empty map if the tags file is missing/unreadable.
+// ---------- player tags (private Drive JSON: {"Name": [photoId, ...]}) ----------
+
+// Newest non-trashed file with the configured name; {file: null, tags: {}} if none.
+function loadTags_() {
+  var out = { file: null, tags: {} };
+  if (!CONFIG.PLAYERS_FILE_NAME) return out;
+  try {
+    var it = DriveApp.getFilesByName(CONFIG.PLAYERS_FILE_NAME);
+    while (it.hasNext()) {
+      var f = it.next();
+      if (f.isTrashed()) continue;
+      if (!out.file || f.getLastUpdated() > out.file.getLastUpdated()) out.file = f;
+    }
+    if (out.file) out.tags = JSON.parse(out.file.getBlob().getDataAsString());
+  } catch (err) { console.error("player tags unreadable", err); }
+  return out;
+}
+
 var PLAYER_INDEX_ = null;
 function playerIndex_() {
   if (PLAYER_INDEX_) return PLAYER_INDEX_;
   PLAYER_INDEX_ = {};
-  if (!CONFIG.PLAYERS_FILE_NAME) return PLAYER_INDEX_;
-  try {
-    var it = DriveApp.getFilesByName(CONFIG.PLAYERS_FILE_NAME), file = null;
-    while (it.hasNext()) {
-      var f = it.next();
-      if (f.isTrashed()) continue;
-      if (!file || f.getLastUpdated() > file.getLastUpdated()) file = f;
-    }
-    if (!file) return PLAYER_INDEX_;
-    var tags = JSON.parse(file.getBlob().getDataAsString());
-    Object.keys(tags).forEach(function (name) {
-      tags[name].forEach(function (id) { (PLAYER_INDEX_[id] = PLAYER_INDEX_[id] || []).push(name); });
-    });
-  } catch (err) { console.error("player tags unreadable", err); }
+  var tags = loadTags_().tags;
+  Object.keys(tags).forEach(function (name) {
+    tags[name].forEach(function (id) { (PLAYER_INDEX_[id] = PLAYER_INDEX_[id] || []).push(name); });
+  });
   return PLAYER_INDEX_;
+}
+
+function tagPassword_() {
+  var prop = PropertiesService.getScriptProperties().getProperty("TAG_PASSWORD");
+  return String(prop || CONFIG.TAG_PASSWORD || "").trim();
+}
+
+// null when the request carries the right tagging password, else an error payload.
+function tagAuthError_(body) {
+  var expected = tagPassword_();
+  if (!expected) return { ok: false, error: "tagging_disabled" };
+  if (String(body.tagPassword || "").trim() !== expected) {
+    Utilities.sleep(1200);
+    return { ok: false, error: "bad_tag_password" };
+  }
+  return null;
+}
+
+// Replace the full list of players tagged in one photo. New names join the roster.
+function setTags_(photoId, players) {
+  if (!/^[A-Za-z0-9_-]{10,}$/.test(photoId)) return { ok: false, error: "bad_photo" };
+  // The photo must be inside the gallery folder tree.
+  try {
+    var parents = DriveApp.getFileById(photoId).getParents(), inside = false;
+    while (parents.hasNext()) {
+      var p = parents.next();
+      if (p.getId() === CONFIG.ROOT_FOLDER_ID) { inside = true; break; }
+      var gp = p.getParents();
+      while (gp.hasNext()) if (gp.next().getId() === CONFIG.ROOT_FOLDER_ID) inside = true;
+    }
+    if (!inside) return { ok: false, error: "bad_photo" };
+  } catch (_) { return { ok: false, error: "bad_photo" }; }
+
+  var names = [];
+  (Array.isArray(players) ? players : []).forEach(function (n) {
+    n = String(n || "").replace(/\s+/g, " ").trim();
+    if (/^[A-Za-z][A-Za-z '\-]{0,29}$/.test(n) && names.indexOf(n) < 0) names.push(n);
+  });
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var t = loadTags_(), tags = t.tags;
+    Object.keys(tags).forEach(function (name) {
+      tags[name] = tags[name].filter(function (id) { return id !== photoId; });
+    });
+    names.forEach(function (name) {
+      (tags[name] = tags[name] || []).push(photoId);
+    });
+    var json = JSON.stringify(tags);
+    if (t.file) t.file.setContent(json);
+    else DriveApp.createFile(CONFIG.PLAYERS_FILE_NAME, json, "application/json"); // created private in My Drive
+    CacheService.getScriptCache().remove("albums");
+    return { ok: true, photo: photoId, players: names, roster: Object.keys(tags).sort() };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function listMedia_(folder) {
