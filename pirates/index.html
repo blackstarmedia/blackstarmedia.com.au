@@ -101,6 +101,20 @@
     .chip img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--surface-2); }
     .chip .n { color: var(--muted); font-size: .8rem; font-weight: 400; }
     .lb-names { color: var(--team-accent); font-weight: 700; margin-left: 8px; }
+    .tag-panel {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--surface);
+      border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+      max-height: 70vh; overflow-y: auto; box-shadow: 0 -20px 40px rgba(0,0,0,.5);
+    }
+    .tag-panel h3 { margin: 0 0 4px; font-family: var(--font-display); text-transform: uppercase; font-size: 1.1rem; }
+    .tag-panel .hint { color: var(--muted); font-size: .85rem; margin: 0 0 12px; }
+    .tag-toggles { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tag-toggle { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; font-weight: 500; }
+    .tag-toggle[aria-pressed="true"] { background: var(--team-accent); color: var(--team-deep); border-color: transparent; }
+    .tag-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tag-row .field { flex: 1; min-width: 0; padding: 10px 12px; }
+    .tag-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .tag-msg { min-height: 1.3em; font-size: .85rem; color: #FF8A8A; margin: 0 0 8px; }
     .card {
       display: block; text-align: left; padding: 0; border: 1px solid var(--line); background: var(--surface);
       border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s;
@@ -246,6 +260,9 @@
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
     <div class="lb-top">
       <span class="lb-counter" id="lb-counter"></span>
+      <button class="icon-btn" id="lb-tag" type="button" title="Tag players" aria-label="Tag players">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 12 22l-9-9V4h9l8.6 8.6a1 1 0 0 1 0 1.4z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>
+      </button>
       <a class="icon-btn" id="lb-download" title="Download" aria-label="Download" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
       </a>
@@ -261,6 +278,33 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg>
     </button>
     <div class="lb-hint">Swipe or use ← → to scroll through photos</div>
+
+    <div class="tag-panel" id="tag-panel" hidden>
+      <form id="tag-auth" hidden>
+        <h3>Tag players</h3>
+        <p class="hint">Enter the tagging password to add or remove names.</p>
+        <div class="tag-row">
+          <input class="field" id="tag-pw" type="password" placeholder="Tagging password" autocomplete="off">
+          <button class="btn btn-primary" type="submit">Unlock</button>
+        </div>
+        <p class="tag-msg" id="tag-auth-msg" role="alert"></p>
+        <div class="tag-actions"><button class="btn" type="button" data-tag-cancel>Cancel</button></div>
+      </form>
+      <form id="tag-edit" hidden>
+        <h3>Who's in this photo?</h3>
+        <p class="hint">Tap names to tag or untag.</p>
+        <div class="tag-toggles" id="tag-toggles"></div>
+        <div class="tag-row">
+          <input class="field" id="tag-new" type="text" placeholder="Add a new player (first name)" maxlength="30" autocomplete="off">
+          <button class="btn" type="button" id="tag-add">Add</button>
+        </div>
+        <p class="tag-msg" id="tag-msg" role="alert"></p>
+        <div class="tag-actions">
+          <button class="btn" type="button" data-tag-cancel>Cancel</button>
+          <button class="btn btn-primary" type="submit" id="tag-save">Save</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -275,6 +319,8 @@
 
     var $ = function (id) { return document.getElementById(id); };
     var albums = [];
+    var roster = [];      // every player name the server knows (including ones with no photos yet)
+    var TAG_KEY = "pirates-gallery-tagpw";
     var current = null;   // album being viewed
     var lbIndex = 0;
 
@@ -309,7 +355,7 @@
       .then(function (r) { return r.json().catch(function () { throw "bad_response"; }); })
       .then(function (res) {
         if (!res || !res.ok) throw (res && res.error) || "server_error";
-        return res.albums || [];
+        return { albums: res.albums || [], roster: res.roster || [] };
       });
     }
 
@@ -357,8 +403,9 @@
     });
 
     // ---------- render ----------
-    function showGallery(list) {
-      albums = list;
+    function showGallery(data) {
+      albums = Array.isArray(data) ? data : (data.albums || []);
+      roster = Array.isArray(data) ? [] : (data.roster || []);
       $("lock").hidden = true; $("app").hidden = false;
       renderAlbums();
       route();
@@ -494,14 +541,18 @@
     function updateLb(i) {
       lbIndex = i;
       var item = current.items[i];
-      $("lb-counter").textContent = (i + 1) + " / " + current.items.length;
-      if (item.players && item.players.length) $("lb-counter").appendChild(el("span", "lb-names", item.players.join(" · ")));
+      renderLbLabel();
       $("lb-download").href = downloadUrl(item.id);
       hydrate(i);
       // stop videos that scrolled away
       Array.prototype.forEach.call(track.children, function (s, j) {
         if (j !== i && s.dataset.type === "video" && s.firstChild) s.innerHTML = "";
       });
+    }
+    function renderLbLabel() {
+      var item = current.items[lbIndex];
+      $("lb-counter").textContent = (lbIndex + 1) + " / " + current.items.length;
+      if (item.players && item.players.length) $("lb-counter").appendChild(el("span", "lb-names", item.players.join(" · ")));
     }
     function openLightbox(i) {
       track.innerHTML = "";
@@ -514,6 +565,7 @@
     }
     function closeLightbox() {
       if (lb.hidden) return;
+      closeTagPanel();
       lb.hidden = true; track.innerHTML = "";
       document.body.style.overflow = "";
       var t = $("grid").children[lbIndex]; if (t) t.focus();
@@ -543,9 +595,100 @@
     $("lb-close").addEventListener("click", closeLightbox);
     document.addEventListener("keydown", function (e) {
       if (lb.hidden) return;
+      if (!$("tag-panel").hidden) { if (e.key === "Escape") closeTagPanel(); return; }
       if (e.key === "Escape") closeLightbox();
       else if (e.key === "ArrowRight") go(1);
       else if (e.key === "ArrowLeft") go(-1);
+    });
+
+    // ---------- tagging ----------
+    var pending = [];   // names selected in the open panel
+
+    function api(body) {
+      body.password = get("localStorage", PW_KEY) || get("sessionStorage", PW_KEY) || "";
+      return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json().catch(function () { throw "bad_response"; }); })
+        .then(function (res) {
+          if (!res || !res.ok) throw (res && res.error) || "server_error";
+          // An older script ignores tag actions and just returns the albums.
+          if (body.action && res.albums) throw "tagging_disabled";
+          return res;
+        });
+    }
+    function tagErrorText(code) {
+      if (code === "bad_tag_password") return "That tagging password isn't right.";
+      if (code === "tagging_disabled") return "Tagging hasn't been switched on yet (no tagging password set in the script).";
+      if (code === "bad_photo") return "This photo can't be tagged.";
+      return "Couldn't save — check your connection and try again.";
+    }
+    function openTagPanel() {
+      var item = current.items[lbIndex];
+      pending = (item.players || []).slice();
+      $("tag-panel").hidden = false;
+      $("tag-msg").textContent = ""; $("tag-auth-msg").textContent = "";
+      if (get("sessionStorage", TAG_KEY)) showTagEditor(); else { $("tag-edit").hidden = true; $("tag-auth").hidden = false; $("tag-pw").value = ""; $("tag-pw").focus(); }
+    }
+    function closeTagPanel() { $("tag-panel").hidden = true; }
+    function showTagEditor() {
+      $("tag-auth").hidden = true; $("tag-edit").hidden = false;
+      renderToggles();
+    }
+    function renderToggles() {
+      var wrap = $("tag-toggles"); wrap.innerHTML = "";
+      var names = roster.slice();
+      pending.forEach(function (n) { if (names.indexOf(n) < 0) names.push(n); });
+      names.sort().forEach(function (n) {
+        var b = el("button", "tag-toggle", n); b.type = "button";
+        b.setAttribute("aria-pressed", pending.indexOf(n) >= 0 ? "true" : "false");
+        b.addEventListener("click", function () {
+          var k = pending.indexOf(n);
+          if (k >= 0) pending.splice(k, 1); else pending.push(n);
+          b.setAttribute("aria-pressed", k >= 0 ? "false" : "true");
+        });
+        wrap.appendChild(b);
+      });
+    }
+    $("lb-tag").addEventListener("click", openTagPanel);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-tag-cancel]"), function (b) { b.addEventListener("click", closeTagPanel); });
+
+    $("tag-auth").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var pw = $("tag-pw").value.trim(); if (!pw) return;
+      $("tag-auth-msg").textContent = "Checking…";
+      api({ action: "checkTagPassword", tagPassword: pw }).then(function () {
+        set("sessionStorage", TAG_KEY, pw); $("tag-auth-msg").textContent = ""; showTagEditor();
+      }).catch(function (code) { $("tag-auth-msg").textContent = tagErrorText(code); });
+    });
+
+    $("tag-add").addEventListener("click", function () {
+      var n = $("tag-new").value.replace(/\s+/g, " ").trim();
+      if (!/^[A-Za-z][A-Za-z '\-]{0,29}$/.test(n)) { $("tag-msg").textContent = "Use letters only (first name)."; return; }
+      n = n.charAt(0).toUpperCase() + n.slice(1);
+      var known = roster.concat(pending).filter(function (r) { return r.toLowerCase() === n.toLowerCase(); })[0];
+      n = known || n;
+      if (pending.indexOf(n) < 0) pending.push(n);
+      $("tag-new").value = ""; $("tag-msg").textContent = "";
+      renderToggles();
+    });
+    $("tag-new").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("tag-add").click(); } });
+
+    $("tag-edit").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var item = current.items[lbIndex], btn = $("tag-save");
+      btn.disabled = true; btn.textContent = "Saving…"; $("tag-msg").textContent = "";
+      api({ action: "setTags", tagPassword: get("sessionStorage", TAG_KEY), photo: item.id, players: pending })
+        .then(function (res) {
+          // the same item object is shared by the game album and the player views
+          if (res.players.length) item.players = res.players; else delete item.players;
+          roster = res.roster || roster;
+          set("sessionStorage", DATA_KEY, JSON.stringify({ albums: albums, roster: roster }));
+          renderPlayers(); renderLbLabel(); closeTagPanel();
+        })
+        .catch(function (code) {
+          if (code === "bad_tag_password") { del("sessionStorage", TAG_KEY); $("tag-edit").hidden = true; $("tag-auth").hidden = false; $("tag-auth-msg").textContent = tagErrorText(code); }
+          else $("tag-msg").textContent = tagErrorText(code);
+        })
+        .then(function () { btn.disabled = false; btn.textContent = "Save"; });
     });
 
     // ---------- boot ----------
