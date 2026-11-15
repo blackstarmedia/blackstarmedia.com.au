@@ -97,7 +97,7 @@ function doPost(e) {
     }
 
     var albums = getAlbums_();
-    return json_({ ok: true, albums: albums, roster: Object.keys(loadTags_().tags).sort(), updated: new Date().toISOString() });
+    return json_({ ok: true, albums: albums, roster: Object.keys(loadTags_().tags), updated: new Date().toISOString() });
   } catch (err) {
     console.error(err);
     return json_({ ok: false, error: "server_error" });
@@ -237,7 +237,7 @@ function setTags_(photoId, players) {
     if (t.file) t.file.setContent(json);
     else DriveApp.createFile(CONFIG.PLAYERS_FILE_NAME, json, "application/json"); // created private in My Drive
     CacheService.getScriptCache().remove("albums");
-    return { ok: true, photo: photoId, players: names, roster: Object.keys(tags).sort() };
+    return { ok: true, photo: photoId, players: names, roster: Object.keys(tags) };
   } finally {
     lock.releaseLock();
   }
