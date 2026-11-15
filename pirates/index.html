@@ -421,7 +421,10 @@
           (it.players || []).forEach(function (n) { (map[n] = map[n] || []).push(it); });
         });
       });
-      return Object.keys(map).sort().map(function (n) {
+      // Display order = roster order (set in the private tags file); any others alphabetically after.
+      var order = roster.filter(function (n) { return map[n]; })
+        .concat(Object.keys(map).filter(function (n) { return roster.indexOf(n) < 0; }).sort());
+      return order.map(function (n) {
         return { id: "player:" + n, title: n, date: "", url: DRIVE_FOLDER, items: map[n], player: true };
       });
     }
@@ -647,7 +650,7 @@
       var wrap = $("tag-toggles"); wrap.innerHTML = "";
       var names = roster.slice();
       pending.forEach(function (n) { if (names.indexOf(n) < 0) names.push(n); });
-      names.sort().forEach(function (n) {
+      names.forEach(function (n) {
         var b = el("button", "tag-toggle", n); b.type = "button";
         b.setAttribute("aria-pressed", pending.indexOf(n) >= 0 ? "true" : "false");
         b.addEventListener("click", function () {
