@@ -114,8 +114,8 @@ function getAlbums_() {
 
   var folders = root.getFolders();
   while (folders.hasNext()) {
-    var album = buildAlbum_(folders.next());
-    if (album.items.length) albums.push(album);
+    // Empty game folders are listed too, so a new game shows as "Photos coming soon".
+    albums.push(buildAlbum_(folders.next()));
   }
 
   var loose = listMedia_(root);
