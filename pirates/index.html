@@ -123,6 +123,8 @@
     .card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--team-primary) 70%, transparent); }
     .card .cover { aspect-ratio: 4 / 3; background: var(--surface-2); position: relative; overflow: hidden; }
     .card .cover img { width: 100%; height: 100%; object-fit: cover; }
+    .card .cover.soon { display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--team-primary) 45%, var(--surface-2)), var(--surface-2)); }
+    .card .cover.soon img { width: 34%; height: auto; object-fit: contain; opacity: .9; }
     .card .badge {
       position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.65); backdrop-filter: blur(6px);
       padding: 3px 10px; border-radius: 999px; font-size: .78rem; font-weight: 500;
@@ -458,9 +460,11 @@
         card.href = "#/album/" + encodeURIComponent(a.id);
         var cover = el("div", "cover");
         var first = a.items.filter(function (i) { return i.type === "image"; })[0] || a.items[0];
-        var img = el("img"); img.loading = "lazy"; img.alt = ""; img.src = thumbUrl(first.id, 800);
+        var img = el("img"); img.loading = "lazy"; img.alt = "";
+        if (first) img.src = thumbUrl(first.id, 800);
+        else { cover.className = "cover soon"; img.src = "logo.png"; }   // game folder created, no photos yet
         cover.appendChild(img);
-        cover.appendChild(el("span", "badge", a.items.length + (a.items.length === 1 ? " photo" : " photos")));
+        cover.appendChild(el("span", "badge", !a.items.length ? "Photos coming soon" : a.items.length + (a.items.length === 1 ? " photo" : " photos")));
         var meta = el("div", "meta");
         if (a.date) meta.appendChild(el("div", "date", fmtDate(a.date)));
         meta.appendChild(el("div", "title", a.title));
@@ -476,6 +480,12 @@
       $("album-drive").href = a.url || DRIVE_FOLDER;
       var grid = $("grid");
       grid.innerHTML = "";
+      if (!a.items.length) {
+        var e = el("div", "empty"); e.style.gridColumn = "1 / -1";
+        e.appendChild(el("strong", null, "Photos coming soon"));
+        e.appendChild(document.createTextNode("Photos from this game haven't been added yet."));
+        grid.appendChild(e);
+      }
       a.items.forEach(function (item, i) {
         var b = el("button", "thumb");
         b.type = "button";
