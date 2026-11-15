@@ -705,7 +705,14 @@
     var savedPw = get("localStorage", PW_KEY) || get("sessionStorage", PW_KEY);
     var cached = get("sessionStorage", DATA_KEY);
     if (savedPw && cached) {
-      try { showGallery(JSON.parse(cached)); return; } catch (_) {}
+      try {
+        showGallery(JSON.parse(cached));          // instant, from this tab's saved copy…
+        fetchAlbums(savedPw).then(function (fresh) { // …then quietly swap in the latest from Drive
+          set("sessionStorage", DATA_KEY, JSON.stringify(fresh));
+          if ($("tag-panel").hidden && lb.hidden) showGallery(fresh);
+        }).catch(function () {});
+        return;
+      } catch (_) {}
     }
     if (savedPw) unlock(savedPw, !!get("localStorage", PW_KEY), true);
     else $("pw").focus();
