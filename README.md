@@ -31,6 +31,7 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 ├── pipeline.html         # The Pipeline — six-stage production process page
 ├── journal.html          # Journal — Suno/AI music commentary
 ├── suno-poster.html      # Email-gated PDF landing page
+├── suno-visuals.html     # Email-gated PDF landing page (Suno Visuals lip-sync workflow)
 ├── privacy.html          # Privacy Policy
 ├── terms.html            # Terms of Use
 ├── CNAME                 # Custom domain for GitHub Pages
@@ -44,6 +45,7 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 │   ├── requirements-transcribe.txt  # pip deps for transcribe_audio.py / content_pipeline.py
 │   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
 │   ├── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
+│   ├── suno-visuals-delivery.gs  # Apps Script web app: suno-visuals.html's email gate
 │   └── pirates-gallery.gs        # Apps Script web app: /pirates/ password check + Drive listing
 ├── assets/
 │   ├── css/styles.css    # Design system + all components

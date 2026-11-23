@@ -140,6 +140,8 @@
       color: var(--color-gold);
     }
     .lp-success__view { font-size: 0.85rem; color: var(--color-muted); }
+    /* The display rules above override the hidden attribute — keep hidden states hidden */
+    .lp-capture-form[hidden], .lp-success[hidden] { display: none; }
 
     /* What's inside */
     .lp-features { background: var(--color-surface-2); }
