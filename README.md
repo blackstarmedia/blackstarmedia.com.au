@@ -46,7 +46,11 @@ Single-page, Apple-inspired dark cinematic design. Pure static HTML/CSS/JS,
 │   ├── email-delivery.gs         # Apps Script web app: email capture + delivery
 │   ├── suno-poster-delivery.gs   # Apps Script web app: suno-poster.html's email gate
 │   ├── suno-visuals-delivery.gs  # Apps Script web app: suno-visuals.html's email gate
-│   └── pirates-gallery.gs        # Apps Script web app: /pirates/ password check + Drive listing
+│   ├── pirates-gallery.gs        # Apps Script web app: /pirates/ password check + Drive listing
+│   └── gh_tools.sh               # Install/start/connect the open-source GitHub toolkit (macOS)
+├── toolkit/
+│   ├── README.md                 # Module H: 9 open-source tools in the YouTube workflow
+│   └── github-tools.json         # Tool manifest (repo, licence, stage, port, MCP)
 ├── assets/
 │   ├── css/styles.css    # Design system + all components
 │   ├── js/main.js        # Nav, reveals, starfield, lazy embeds
@@ -216,6 +220,13 @@ python3 scripts/content_pipeline.py voiceover.mp3 --name my-video
 That writes `output/my-video/script.txt` and prints the two follow-up skill
 invocations to run in a Claude Code session. `output/` is gitignored — it's
 per-run scratch content, not part of the site.
+
+### Open-source toolkit (Module H)
+
+Nine free GitHub tools that slot into the pipeline (Open Generative AI, VoiceStudio,
+OpenSEO, AppFlowy, OpenWhispr, OpenProject, Cal.diy, Chatwoot, Cap). See
+[`toolkit/README.md`](toolkit/README.md); set them up with
+`./scripts/gh_tools.sh install-apps`, `up <server>` and `mcp`.
 
 ---
 
