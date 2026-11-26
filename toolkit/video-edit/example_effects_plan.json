@@ -1,0 +1,79 @@
+{
+ "effects": [
+  {
+   "fx": "lean-in",
+   "start": 5.35,
+   "end": 6.7,
+   "zoom": 1.35
+  },
+  {
+   "fx": "lean-in",
+   "start": 10.9,
+   "end": 11.9,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 14.9,
+   "end": 15.8,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 18.7,
+   "end": 19.7,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 22.1,
+   "end": 23.1,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 30.9,
+   "end": 31.9,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 33.7,
+   "end": 34.7,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 39.2,
+   "end": 40.2,
+   "zoom": 1.25
+  },
+  {
+   "fx": "lean-in",
+   "start": 46.3,
+   "end": 47.6,
+   "zoom": 1.25
+  },
+  {
+   "fx": "pop-word",
+   "start": 2.1,
+   "end": 3.9,
+   "text": "SUNO VISUALS",
+   "color": "#E8EBEF"
+  },
+  {
+   "fx": "checklist",
+   "start": 12.9,
+   "end": 20.4,
+   "title": "Suno",
+   "text": "Concept::done|Lyrics::done|Music::done|Video::done"
+  },
+  {
+   "fx": "pop-word",
+   "start": 36.5,
+   "end": 38.2,
+   "text": "MARKETING",
+   "color": "#E8EBEF"
+  }
+ ]
+}
