@@ -4,11 +4,13 @@
 usage: overlay.py base.mp4 out.mp4 words.json [fonts_dir]
        overlay.py base.mp4 out.mp4 words.json fonts_dir t1,t2,...   (writes ov_<t>.png stills)
 
-The event timings in draw_frame() were written for one specific clip (Suno Visuals).
-For a new clip, edit those times/icons from words.json (see README.md).
+Icons, bursts and sparkles are triggered automatically by the spoken words (see triggers.py).
 """
 import math, subprocess, sys, random
 import numpy as np
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from triggers import events
 from PIL import Image, ImageDraw, ImageFont
 
 SRC, DST = sys.argv[1], sys.argv[2]
@@ -255,47 +257,23 @@ def karaoke(layer, t, cy):
         paste(layer, im, cx, cy, sc, 1.0)
         x += (wd + gap) * fit
 
+EVENTS = None
 def draw_frame(t, T):
+    global EVENTS
+    if EVENTS is None: EVENTS = events(WORDS, T)
     L = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     twinkles(L, t); progress_line(L, t, T)
-    # intro: 0.6s ★ tag + 2.2 Suno Visuals
     tag(L, t, 0.3, 2.0, '★ BLACK STAR MEDIA', W / 2, 0.075 * H)
-    pop_item(L, t, 2.15, 4.2, 'play', W * 0.5, 0.135 * H, 190, 'SUNO VISUALS', tilt=-12)
-    burst(L, t, 2.15, W * 0.5, 0.135 * H)
-    for (x, y, tt, rr) in ((0.09, 0.27, 2.3, 20), (0.91, 0.26, 2.45, -20), (0.14, 0.20, 2.6, 0), (0.86, 0.19, 2.7, 0)):
-        sparkle(L, t, tt, W * x, H * y, 80, 1.2, rr)
-    # mind blown
-    burst(L, t, 5.45, W * 0.5, 0.2 * H, n=18, r0=80, r1=330, life=0.8, w=9)
-    pop_item(L, t, 5.4, 7.0, 'bolt', W * 0.82, 0.14 * H, 190, 'MIND BLOWN', tilt=14)
-    pop_item(L, t, 5.55, 7.0, 'spark', W * 0.17, 0.15 * H, 150)
-    sparkle(L, t, 5.7, W * 0.88, 0.30 * H, 90, 1.0); sparkle(L, t, 5.85, W * 0.1, 0.30 * H, 70, 1.0)
-    # understanding / concept
-    for tt, x, y in ((7.65, 0.12, 0.2), (7.8, 0.88, 0.17), (8.0, 0.5, 0.1)): sparkle(L, t, tt, W * x, H * y, 90, 1.1)
-    # pipeline: concept -> song -> lyrics -> music -> video
-    pipeline(L, t, [(10.9, 'bulb', 'CONCEPT'), (13.15, 'note', 'SONG'), (14.9, 'pen', 'LYRICS'), (16.7, 'wave', 'MUSIC'), (18.7, 'video', 'VIDEO')], 21.2)
-    burst(L, t, 10.95, W * 0.13, 0.115 * H, n=10, r0=50, r1=160, life=0.5, w=6)
-    tag(L, t, 20.1, 22.0, '★  ALL ON ONE PLATFORM', W / 2, 0.215 * H, size=30)
-    # incredible
-    stars_row(L, t, 22.15, 25.0, 0.125 * H, 'INCREDIBLE'); burst(L, t, 22.2, W / 2, 0.125 * H, n=16, r0=120, r1=340, life=0.8)
-    # video comes out great / viable
-    sparkle(L, t, 25.3, W * 0.88, 0.2 * H, 100, 1.1); sparkle(L, t, 25.45, W * 0.1, 0.16 * H, 80, 1.1)
-    pop_item(L, t, 27.6, 29.2, 'song' if False else 'note', W * 0.84, 0.15 * H, 160, 'THE SONG', tilt=10)
-    pop_item(L, t, 30.9, 33.3, 'chart', W * 0.5, 0.13 * H, 190, 'COMMERCIALLY VIABLE', tilt=-8); burst(L, t, 30.95, W * 0.5, 0.13 * H)
-    # money
-    pop_item(L, t, 33.7, 36.2, 'coin', W * 0.82, 0.14 * H, 190, 'MAKE MONEY', tilt=15); burst(L, t, 33.75, W * 0.82, 0.14 * H, n=12, r0=60, r1=220)
-    sparkle(L, t, 33.9, W * 0.15, 0.18 * H, 90, 1.1)
-    # marketing
-    pop_item(L, t, 36.5, 38.8, 'mega', W * 0.5, 0.115 * H, 190, None, tilt=-10); burst(L, t, 36.55, W * 0.5, 0.115 * H, n=16, r0=70, r1=280, life=0.7)
-    pop_item(L, t, 36.7, 38.8, 'chart', W * 0.86, 0.17 * H, 150); pop_item(L, t, 36.8, 38.8, 'spark', W * 0.14, 0.17 * H, 130)
-    # great tool
-    sparkle(L, t, 39.3, W * 0.85, 0.15 * H, 100, 1.2); sparkle(L, t, 39.45, W * 0.13, 0.2 * H, 80, 1.2)
-    # hobby / songwriter
-    pop_item(L, t, 42.8, 45.0, 'mic', W * 0.2, 0.14 * H, 170, 'HOBBY', tilt=-10); pop_item(L, t, 43.35, 45.2, 'note', W * 0.8, 0.14 * H, 170, 'SONGWRITER', tilt=10)
-    # try it + outro
-    burst(L, t, 46.4, W * 0.5, 0.15 * H, n=20, r0=90, r1=360, life=0.9, w=10)
-    pop_item(L, t, 46.4, T + 1, 'cursor', W * 0.5, 0.14 * H, 200, 'TRY IT', float_amp=10)
-    tag(L, t, 46.9, T + 1, '★ BLACK STAR MEDIA', W / 2, 0.285 * H, serif=False)
-    karaoke(L, t, H * (0.968 if 12.8 <= t < 20.6 else 0.80))
+    for i, e in enumerate(EVENTS):
+        if e['kind'] == 'stars':
+            stars_row(L, t, e['t0'], e['t1'], 0.125 * H, e['label']); burst(L, t, e['t0'] + 0.05, W / 2, 0.125 * H, n=16, r0=120, r1=340, life=0.8)
+        else:
+            pop_item(L, t, e['t0'], e['t1'], e['icon'], W * e['x'], 0.135 * H, 180, e['label'], tilt=e['tilt'])
+            burst(L, t, e['t0'] + 0.05, W * e['x'], 0.135 * H, n=12, r0=60, r1=230, life=0.6)
+            sx = 0.08 if e['x'] > 0.5 else 0.92
+            sparkle(L, t, e['t0'] + 0.15, W * sx, H * (0.2 + 0.03 * (i % 3)), 80, 1.1, rot=(i * 17) % 40)
+    tag(L, t, T - 1.5, T + 1, '★ BLACK STAR MEDIA', W / 2, 0.075 * H)
+    karaoke(L, t, H * 0.80)
     return L
 
 def main():
